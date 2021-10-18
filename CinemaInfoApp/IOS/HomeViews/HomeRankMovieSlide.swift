@@ -5,6 +5,8 @@ struct HomeRankMovieSlide: View {
     var movies: [MovieProtocol]
     
     var memoString: String = ""
+    @State var currentMovieIndex: Int = 0
+    
     
     let gradient = LinearGradient(
         gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.4),  Color.black.opacity(1)]),
@@ -13,58 +15,20 @@ struct HomeRankMovieSlide: View {
     )
 
     var body: some View {
-        VStack {
-            TabView {
-                ForEach(movies.map { $0.movie }, id: \.self) { movie in
-                    if movie.posterImgURL != nil {
-                        
-                        ZStack {
-                            KFImage(movie.posterImgURL)
-                                .cancelOnDisappear(true)
-                                .resizable()
-                                .placeholder{
-                                    ProgressView()
-                                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                }
-                                .scaledToFit()
-                                .overlay(gradient)
-                            
-                            VStack {
-                                Spacer()
-                                
-                                HStack {
-                                    ForEach(0..<movie.memos.count, id: \.self) { index in
-
-                                        Text(movie.memos[index])
-                                            .font(.system(size: 12, weight: .bold))
-                                            .foregroundColor(Color.white)
-
-                                    }
-                                }
-                                .padding(.bottom, 30)
-                                
-                                HStack {
-                                    Spacer()
-                                    NavigationLink(destination: NavigationLazyView(MovieDetail(movie: movies.first{
-                                        $0.movie.movieId == movie.movieId
-                                    }!))) {
-                                        HStack {
-                                            VStack {
-                                                Image(systemName: "info.circle")
-                                                    .resizable()
-                                                    .frame(width: 30, height: 30)
-                                                Text("Info")
-                                                    .offset(y: -8)
-                                            }
-                                            .foregroundColor(Color.white)
-                                        }
-                                    }
-                                }
-                                .padding(.horizontal, 50)
+        ZStack {
+            TabView(selection: $currentMovieIndex) {
+                ForEach(movies.map { $0.movie }.indices, id: \.self) { index in
+                    if movies[index].movie.posterImgURL != nil {
+                        KFImage(movies[index].movie.posterImgURL)
+                            .cancelOnDisappear(true)
+                            .resizable()
+                            .placeholder{
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
                             }
-                            
-                        }
-                        
+                            .scaledToFit()
+                            .overlay(gradient)
+                            .tag(index)
                     }
                     else {
                         Text("이미지 없음")
@@ -72,6 +36,55 @@ struct HomeRankMovieSlide: View {
                 }
             }
             .tabViewStyle(PageTabViewStyle())
+            
+            VStack {
+                Spacer()
+                
+                HStack {
+                    ForEach(0..<movies[currentMovieIndex].movie.allGenore.count, id: \.self) { index in
+
+                        Text(movies[currentMovieIndex].movie.allGenore[index]?.rawValue ?? "기타")
+                            
+
+                        Image(systemName: "circle.fill")
+                            .resizable()
+                            .frame(width: 4, height: 4)
+                            .padding(.horizontal, -1)
+                        
+
+                    }
+                    Text(movies[currentMovieIndex].movie.age.rawValue ?? "")
+                    
+                    Image(systemName: "circle.fill")
+                        .resizable()
+                        .frame(width: 4, height: 4)
+                        .padding(.horizontal, -1)
+                    
+                    Text(movies[currentMovieIndex].movie.productionCountry)
+                        
+                }
+                .font(.system(size: 12, weight: .bold))
+                .frame(height: 22)
+                .padding(.bottom, 30)
+                
+                HStack {
+                    Spacer()
+                    NavigationLink(destination: NavigationLazyView(MovieDetail(movie: movies[currentMovieIndex]
+                    ))) {
+                        HStack {
+                            VStack {
+                                Image(systemName: "info.circle")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                Text("Info")
+                                    .offset(y: -8)
+                            }
+                        }
+                    }
+                }
+                .padding(.horizontal, 50)
+            }
+            .foregroundColor(Color.white)
         }
     }
 }

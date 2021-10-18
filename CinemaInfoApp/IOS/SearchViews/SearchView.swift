@@ -36,10 +36,14 @@ extension SearchView {
                             }
                             else {
                                 SearchResultGrid(movies: searchVM.searchResultMovies)
+                                    .padding(.bottom, 2000)
+                                
                             }
-                           
                         }
+                        
                     }
+                    
+                    
                 }
                 .padding(.top, 18)
                 .padding(.horizontal, 6)

@@ -66,6 +66,7 @@ struct MovieDetail: View {
                 .foregroundColor(.white)
                 
             }
+
         }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
@@ -140,7 +141,7 @@ extension MovieDetail {
         }
         .padding(.top, UIScreen.screenHeight / 3 * 2 - 80)
         .padding(.horizontal, 6)
-        
+        .padding(.bottom, UIScreen.tabbarHeight)
     }
 }
 

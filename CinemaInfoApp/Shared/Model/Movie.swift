@@ -26,7 +26,7 @@ struct Movie: Hashable, Equatable {
             return nil
         }
         
-        if let url = URL(string: "\(SecretText.baseURL)images/\(posterImg)") {
+        if let url = URL(string: "\(SecretText.baseURL)images/beta/\(posterImg)") {
             return url
         }else {
             return nil

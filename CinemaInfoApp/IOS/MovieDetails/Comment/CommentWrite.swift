@@ -3,13 +3,16 @@ import simd
 
 struct CommentWrite: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var baseViewModel: BaseViewModel
+    
     var movie: MovieProtocol
     @StateObject var commentWriteViewModel = CommentWriteViewModel()
-    @State var currentStar: Int = 8
+    @State var currentStar: Int = 10
     
 
     init(movie: MovieProtocol) {
         self.movie = movie
+//        baseViewModel.showTabbar = false
     }
     
     var body: some View {
@@ -21,6 +24,7 @@ struct CommentWrite: View {
                 HStack {
                     
                     Button(action: {
+                        baseViewModel.showTabbar = true
                         presentationMode.wrappedValue.dismiss()
                     }, label: {
                         Image(systemName: "xmark")
@@ -29,6 +33,12 @@ struct CommentWrite: View {
                     })
                     
                     Spacer()
+                    
+                    Button(action: {
+                        
+                    }, label: {
+                        Text("작성하기")
+                    })
                 }
                 .padding(.vertical, 8)
                 .padding(.horizontal, 18)
@@ -43,13 +53,11 @@ struct CommentWrite: View {
                         .font(.system(size: 14))
                         .padding(.vertical, 12)
                     HStack {
-                        ForEach(1...currentStar+1, id: \.self) { index in
+                        ForEach(1..<11, id: \.self) { index in
                             
                             HStack{
-                                if index == currentStar+1 {
-                                    
-                                }
-                                else if index % 2 == 1{
+
+                                if index % 2 == 1{
                                     Button(action: {
                                         print("왼쪽 별")
                                         currentStar = index
@@ -59,7 +67,7 @@ struct CommentWrite: View {
                                             .scaledToFill()
                                             .frame(width: 10, height: 20, alignment: .leading)
                                             .clipped()
-                                            .foregroundColor(.yellow)
+                                            .foregroundColor(index <= currentStar ? .yellow : .white)
                                     })
                                         
                                     
@@ -75,11 +83,12 @@ struct CommentWrite: View {
                                             .frame(width: 10, height: 20, alignment: .leading)
                                             .clipped()
                                             .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                                            .foregroundColor(.yellow)
+                                            .foregroundColor(index <= currentStar ? .yellow : .white)
                                         
                                     })
                                     .offset(x: -8)
                                 }
+
                             }
                         }
                         
@@ -98,11 +107,16 @@ struct CommentWrite: View {
         }
         .foregroundColor(Color.white)
         .navigationBarHidden(true)
+        .onAppear() {
+            baseViewModel.showTabbar = false
+        }
     }
 }
 
 struct CommentWrite_Previews: PreviewProvider {
     static var previews: some View {
         CommentWrite(movie: exampleMovie1)
+            .environmentObject(BaseViewModel())
     }
 }
+

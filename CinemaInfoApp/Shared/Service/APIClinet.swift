@@ -21,7 +21,8 @@ struct APIClinet {
                         let value = try JSONDecoder().decode(T.self, from: result.data)
                         return Response(value: value, response: result.response)
                     }
-                    .receive(on: DispatchQueue.main)
+                    .receive(on: DispatchQueue.global(qos: .background))
                     .eraseToAnyPublisher()
+                    
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var startViewModel: TutorialViewModel
+    @EnvironmentObject var tutorialViewModel: TutorialViewModel
     var body: some View {
         ZStack {
             Color.black
@@ -29,7 +29,6 @@ struct LoginView: View {
                     
                     Spacer()
                     
-                    
                     Button(action: {
                         
                     }, label: {
@@ -47,11 +46,11 @@ struct LoginView: View {
                 
             VStack(spacing: 18) {
                 Spacer()
-                SignTextField(placeHolder: "아이디", secure: false, text: $startViewModel.idString)
-                SignTextField(placeHolder: "비밀번호", secure: true, text: $startViewModel.pwString)
+                SignTextField(placeHolder: "아이디", secure: false, text: $tutorialViewModel.idString)
+                SignTextField(placeHolder: "비밀번호", secure: true, text: $tutorialViewModel.pwString)
                 
                 Button(action: {
-                    
+                    tutorialViewModel.CheckLogin()
                 }, label: {
                     HStack{
                         Spacer()
@@ -61,9 +60,30 @@ struct LoginView: View {
                         Spacer()
                     }
                     .frame(height: 60)
-                    .border(Color(hex: "#1f1f1f"), width: 2)
+                    .cornerRadius(6)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(Color(hex: "#1f1f1f"), lineWidth: 4)
+                    )
+                })
+                
+                Button(action: {
                     
-                    
+                }, label: {
+                    HStack{
+                        Spacer()
+                        Text("회원가입")
+                            .foregroundColor(Color.black)
+                            .font(.system(size: 18, weight: .bold))
+                        Spacer()
+                    }
+                    .frame(height: 60)
+                    .background(Color.white)
+                    .cornerRadius(6)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(Color(hex: "#1f1f1f"), lineWidth: 4)
+                    )
                 })
                     
                 Spacer()

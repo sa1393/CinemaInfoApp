@@ -26,12 +26,10 @@ struct CommentTextField: View {
                         }
                     }
                     else {
-                        
                         isTapped = false
-                    
                     }
                 })
-                .placeHolder(hint: Text(isTapped ? "" : "감상평을 써주세요.").padding(.leading, 8).padding(.bottom, 4).foregroundColor(Color.gray))
+                .placeHolder(hint: Text(isTapped ? "" : "감상평을 써주세요.").padding(.leading, 8).offset(y: -42).padding(.bottom, 4).foregroundColor(Color.gray))
                 .padding(.horizontal, 8)
                 .padding(.vertical, 12)
                 .font(.system(size: 18))

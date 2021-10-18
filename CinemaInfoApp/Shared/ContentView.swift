@@ -9,38 +9,46 @@ struct ContentView: View{
         ZStack {
             Color.black
                 .edgesIgnoringSafeArea(.all)
-            
             GeometryReader { proxy in
+
                 TabView(selection: $baseViewModel.selected) {
                     HomeView()
                         .tag(Tab.home)
                     SearchView()
                         .tag(Tab.search)
+
                     Color.black
                         .edgesIgnoringSafeArea(.all)
                         .tag(Tab.more)
+
                 }
                 .overlay(
                     HStack {
-                        TabButton(tab: .home, systemIcon: "house.fill")
-                        TabButton(tab: .search, systemIcon: "magnifyingglass")
-                        TabButton(tab: .more, systemIcon: "text.justify")
+                        if baseViewModel.showTabbar {
+                            TabButton(tab: .home, systemIcon: "house.fill")
+                            TabButton(tab: .search, systemIcon: "magnifyingglass")
+                            TabButton(tab: .more, systemIcon: "text.justify")
+                        }
+                        else {
+                            Rectangle()
+                                .foregroundColor(Color.black)
+                        }
                     }
                     .frame(height: proxy.size.height / 10)
-
                     .background(
                         Color.black.opacity(1)
                             .ignoresSafeArea(.container, edges: .bottom)
                     )
-
+                    
                     , alignment: .bottom
                 )
             }
+        
             if !baseViewModel.launchAfter {
                 TutorialView()
             }
-            
         }
+        .preferredColorScheme(.dark)
     }
 }
 
@@ -102,7 +110,7 @@ struct ContentView_Previews: PreviewProvider {
         
         ContentView()
             .environmentObject(BaseViewModel())
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
+            .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
         
     }
 }

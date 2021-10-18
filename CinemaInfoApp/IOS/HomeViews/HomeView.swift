@@ -20,26 +20,26 @@ struct HomeView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    GeometryReader { geometry in
+                    GeometryReader { proxy in
                         ScrollView(.vertical, showsIndicators: false){
                             LazyVStack {
                                 ZStack {
                                     VStack(alignment: .leading) {
                                         if isPreview {
                                             HomeRankMovieSlide(movies: [exampleMovie3, exampleMovie2, exampleMovie1])
-                                                .frame(width: geometry.size.width, height: geometry.size.width / 2 * 3)
+                                                .frame(width: proxy.size.width, height: proxy.size.width / 2 * 3)
                                         }
                                         else {
                                             if homeVM.rankMovies.count > 0 {
                                                 HomeRankMovieSlide(movies: homeVM.rankMovies)
-                                                    .frame(width: geometry.size.width, height: geometry.size.width / 2 * 3)
+                                                    .frame(width: proxy.size.width, height: proxy.size.width / 2 * 3)
                                             }
                                         }
                                     }
                                     
                                     VStack {
                                         topMenu
-                                            .frame(height: geometry.size.height / 5)
+                                            .frame(height: proxy.size.height / 5)
                                             .background(gradient1)
                                         
                                         Spacer()
@@ -51,7 +51,9 @@ struct HomeView: View {
                                 }
                                 .padding(.horizontal, 6)
                             }
+                            .padding(.bottom, UIScreen.tabbarHeight)
                         }
+                        
                     }
                 }
                 
@@ -80,11 +82,6 @@ extension HomeView{
             
             Spacer()
             
-            
-            NavigationLink(destination: NavigationLazyView(MyInfoView())) {
-                Image(systemName: "person.fill")
-            }
-            
         }
         .padding(.horizontal, 8)
         
@@ -93,7 +90,8 @@ extension HomeView{
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        ContentView()
+            .environmentObject(BaseViewModel())
         HomeView()
             .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
         HomeView()

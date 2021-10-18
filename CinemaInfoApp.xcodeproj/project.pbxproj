@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		631AF99827194677004499EA /* SignInVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631AF99727194677004499EA /* SignInVIew.swift */; };
+		632C6ACB271D0F2400FFA0C4 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632C6ACA271D0F2400FFA0C4 /* ImagePickerView.swift */; };
+		632C6ACD271D1AC700FFA0C4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632C6ACC271D1AC700FFA0C4 /* User.swift */; };
+		632C6ACF271D5DBA00FFA0C4 /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632C6ACE271D5DBA00FFA0C4 /* KeyChain.swift */; };
 		633E5B3527166C62003A74B7 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633E5B3427166C62003A74B7 /* TutorialView.swift */; };
 		633E5B372716743C003A74B7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633E5B362716743C003A74B7 /* LoginView.swift */; };
 		633E5B3927167840003A74B7 /* TutorialVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633E5B3827167840003A74B7 /* TutorialVM.swift */; };
@@ -50,6 +54,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		631AF99727194677004499EA /* SignInVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVIew.swift; sourceTree = "<group>"; };
+		632C6ACA271D0F2400FFA0C4 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		632C6ACC271D1AC700FFA0C4 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		632C6ACE271D5DBA00FFA0C4 /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		633E5B3427166C62003A74B7 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		633E5B362716743C003A74B7 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		633E5B3827167840003A74B7 /* TutorialVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialVM.swift; sourceTree = "<group>"; };
@@ -111,6 +119,7 @@
 				634CCC9B270EDAE200AA180E /* SignTextField.swift */,
 				633E5B362716743C003A74B7 /* LoginView.swift */,
 				633E5B3827167840003A74B7 /* TutorialVM.swift */,
+				631AF99727194677004499EA /* SignInVIew.swift */,
 			);
 			path = StartViews;
 			sourceTree = "<group>";
@@ -210,6 +219,7 @@
 			children = (
 				639E933E26FD599C0084EB47 /* TabBarIcon.swift */,
 				639E934026FD599C0084EB47 /* StandardHomeMovie.swift */,
+				632C6ACA271D0F2400FFA0C4 /* ImagePickerView.swift */,
 			);
 			path = HelperViews;
 			sourceTree = "<group>";
@@ -231,6 +241,7 @@
 				639E934D26FD599C0084EB47 /* GlobalHelpers.swift */,
 				63A0B67F26FD73FF00AA292A /* NavigationLazyView.swift */,
 				639E934E26FD599C0084EB47 /* Modifier.swift */,
+				632C6ACE271D5DBA00FFA0C4 /* KeyChain.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -253,6 +264,7 @@
 				639E935C26FD599C0084EB47 /* RatingMovie.swift */,
 				63FBB0EB27054CA2002AF2BC /* AllMovie.swift */,
 				639E935226FD599C0084EB47 /* Respose.swift */,
+				632C6ACC271D1AC700FFA0C4 /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -354,6 +366,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				631AF99827194677004499EA /* SignInVIew.swift in Sources */,
 				639E936526FD599C0084EB47 /* SearchResultGrid.swift in Sources */,
 				639E937F26FD599C0084EB47 /* MovieDBAPI.swift in Sources */,
 				639E936826FD599C0084EB47 /* HomeView.swift in Sources */,
@@ -375,11 +388,13 @@
 				639E938026FD599C0084EB47 /* APIClinet.swift in Sources */,
 				639228A62717CDB70073D1BA /* CommentWriteVM.swift in Sources */,
 				639E936226FD599C0084EB47 /* SearchView.swift in Sources */,
+				632C6ACB271D0F2400FFA0C4 /* ImagePickerView.swift in Sources */,
 				639E938626FD599C0084EB47 /* RatingMovie.swift in Sources */,
 				634CCC9C270EDAE200AA180E /* SignTextField.swift in Sources */,
 				639E937726FD599C0084EB47 /* MovieDetailVM.swift in Sources */,
 				639E937A26FD599C0084EB47 /* Modifier.swift in Sources */,
 				639E938326FD599C0084EB47 /* RankMovie.swift in Sources */,
+				632C6ACD271D1AC700FFA0C4 /* User.swift in Sources */,
 				633E5B3D2716BC62003A74B7 /* CommentWrite.swift in Sources */,
 				634FBDA92706C2ED00791DAE /* HomeRankMovieSlide.swift in Sources */,
 				639228A42717BE750073D1BA /* BaseViewModel.swift in Sources */,
@@ -388,6 +403,7 @@
 				639E937D26FD599C0084EB47 /* Respose.swift in Sources */,
 				639E938126FD599C0084EB47 /* Review.swift in Sources */,
 				633E5B3527166C62003A74B7 /* TutorialView.swift in Sources */,
+				632C6ACF271D5DBA00FFA0C4 /* KeyChain.swift in Sources */,
 				639E936126FD599C0084EB47 /* MySearchBar.swift in Sources */,
 				639E931726FD59440084EB47 /* CinemaInfoAppApp.swift in Sources */,
 				635FF9F92701585B006DEE7D /* CommentView.swift in Sources */,
@@ -525,6 +541,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CinemaInfoApp/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera permissions for taking photos and videos";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Album permissions to save videos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -556,6 +574,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CinemaInfoApp/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera permissions for taking photos and videos";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Album permissions to save videos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

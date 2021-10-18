@@ -16,10 +16,9 @@ struct StandardHomeMovie: View {
                         .cancelOnDisappear(true)
                         .resizable()
                         .placeholder{
-
-                            RoundedRectangle(cornerRadius: 4)
-                                .frame(width: proxy.size.width, height: proxy.size.height)
-                                .overlay(Color.gray)
+                            RoundedRectangle(cornerRadius: 8)
+                                .foregroundColor(Color.gray)
+                                .aspectRatio(0.7, contentMode: .fill)
                         
                         }
                         .scaledToFit()
@@ -47,3 +46,4 @@ struct StandardHomeMovie_Previews: PreviewProvider {
         
     }
 }
+

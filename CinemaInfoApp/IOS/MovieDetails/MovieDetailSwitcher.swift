@@ -98,6 +98,7 @@ struct MovieDetailSwitcher_Previews: PreviewProvider {
                 Color.black
                     .edgesIgnoringSafeArea(.all)
                 MovieDetailSwitcher(movieDetailVM: MovieDetailVM(movie: exampleMovie1), movie: exampleMovie1, screening: false)
+                    
             }
         }
         

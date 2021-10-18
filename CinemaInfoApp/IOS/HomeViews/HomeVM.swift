@@ -8,9 +8,12 @@ class HomeVM : ObservableObject{
     @Published var ratingMovies: [RatingMovie] = []
     @Published var rankMovies: [RankMovie] = []
     
+    @Published var loading: Bool = false
+    
     var rankCancellationToken: AnyCancellable?
     var ratingCancellationToken: AnyCancellable?
     var genoreCancellationToken: AnyCancellable?
+    var loginCancellationToken: AnyCancellable?
     
     public var allCategories: [String] {
         categoryMovies.map { $0.key }
@@ -26,6 +29,9 @@ class HomeVM : ObservableObject{
     init() {
         self.fetchRatingMovies()
         self.fetchRankMovies()
+        
+        self.testLogin()
+        print("test")
     }
 }
 
@@ -106,6 +112,7 @@ extension HomeVM {
             .sink(receiveCompletion: { [weak self] result in
                 print("rating result: \(result)")
                 self?.setCategories()
+                self?.loading = true
             }, receiveValue: { [weak self] value in
                 self?.ratingMovies = value.movies.filter{$0.movie.posterImgURL != nil}
             })
@@ -127,4 +134,17 @@ extension HomeVM {
     }
 }
 
-
+extension HomeVM {
+    func testLogin() {
+        loginCancellationToken = MovieDB.login()
+            .mapError({ (error) -> Error in
+                print("login error: \(error)")
+                return error
+            })
+            .sink(receiveCompletion: {
+                print("login result: \($0)")
+            }, receiveValue: { value in
+                print(value)
+            })
+    }
+}
