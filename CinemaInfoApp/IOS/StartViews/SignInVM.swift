@@ -1,15 +1,14 @@
 import Foundation
 
-class TutorialViewModel: ObservableObject {
-    @Published var idString: String = ""
-    @Published var pwString: String = ""
+class LoginViewModel: ObservableObject {
+    @Published var id: String = ""
+    @Published var pwd: String = ""
     
     init() {
-        
     }
 }
 
-extension TutorialViewModel {
+extension LoginViewModel {
     func CheckLogin() {
         MovieDB.loginCheck()
             .mapError({ (error) -> Error in
