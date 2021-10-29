@@ -3,13 +3,7 @@ import SwiftUI
 struct HomeView: View {
     @Environment(\.isPreview) var isPreview
     @StateObject var homeVM: HomeVM = HomeVM()
-    
-    let gradient1 = LinearGradient(
-        gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.85), Color.black.opacity(0.9)]),
-        startPoint: .bottom,
-        endPoint: .top
-    )
-    
+
     var body: some View {
         ZStack {
             Color.black
@@ -20,11 +14,7 @@ struct HomeView: View {
                         LazyVStack {
                             ZStack {
                                 VStack(alignment: .leading) {
-                                    if homeVM.rankMovies.count > 0 {
-                                        HomeRankMovieSlide(movies: homeVM.rankMovies)
-                                            .frame(width: proxy.size.width, height: proxy.size.width / 2 * 3)
-                                    }
-                                    else {
+                                    if homeVM.rankLoading {
                                         VStack(alignment: .center) {
                                             HStack(alignment: .center){
                                                 ProgressView()
@@ -34,13 +24,24 @@ struct HomeView: View {
                                         }
                                         .frame(width: proxy.size.width, height: proxy.size.width / 2 * 3)
                                     }
+                                    else {
+                                        if homeVM.rankMovies.count > 0 {
+                                            HomeRankMovieSlide(movies: homeVM.rankMovies)
+                                                .frame(width: proxy.size.width, height: proxy.size.width / 2 * 3)
+                                                
+                                        }
+                                        else {
+                                            
+                                        }
+                                    }
+                                    
 
                                 }
                                 
                                 VStack {
                                     topMenu
-                                        .frame(height: proxy.size.height / 5)
-                                        .background(gradient1)
+                                        .frame(height: 40)
+                                        
                                     
                                     Spacer()
                                 }

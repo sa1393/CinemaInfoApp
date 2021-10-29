@@ -40,7 +40,8 @@ class HomeVM : ObservableObject{
 }
 
 extension HomeVM {
-    func fetchRankMovies(size: Int) {
+    func fetchRankMovies(size: Int?) {
+        rankLoading = true
         rankCancellationToken = MovieDB.getRequest("movies/", endPoint: "rank",  type: MovieRankResponse(movies: []))
             .mapError({ (error) -> Error in
                 return error
@@ -49,14 +50,17 @@ extension HomeVM {
                 switch result {
                 case .finished :
                     print("RankFinish")
-                    break
                 case .failure(let error) :
                     print("RankFail: \(error)")
-                    break
                 }
                 
+                self?.rankLoading = false
+                
             }, receiveValue: { [weak self] value in
-                self?.rankMovies = value.movies.filter{$0.movie.posterImgURL != nil}
+                if let movies = value.movies {
+                    self?.rankMovies = movies
+                }
+                
             })
     }
 }

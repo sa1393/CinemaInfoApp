@@ -38,12 +38,9 @@ extension SearchView {
                 }
                 else {
                     ScrollView(showsIndicators: false) {
-                        VStack{
-                            SearchResultGrid(searchViewModel: searchVM)
-                                .padding(.bottom, UIScreen.screenHeight - UIScreen.screenHeight / 10 + 10)
-                        }
-                        
-                        .frame(maxHeight: .infinity)
+                        SearchResultGrid(searchViewModel: searchVM)
+                            
+                            .frame(maxHeight: .infinity)
                         
     
                     }
@@ -62,5 +59,9 @@ extension SearchView {
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchView()
+            .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+        SearchView()
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
+        
     }
 }

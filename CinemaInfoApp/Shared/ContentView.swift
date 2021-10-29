@@ -33,7 +33,7 @@ struct ContentView: View{
                             }
                             .frame(height: proxy.size.height / 10)
                             .background(
-                                Color.black.opacity(1)
+                                Color.black.opacity(0.9)
                                     .ignoresSafeArea(.container, edges: .bottom)
                             )
                             , alignment: .bottom

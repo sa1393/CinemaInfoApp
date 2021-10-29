@@ -38,9 +38,12 @@ extension ReviewHistoryViewModel {
                 self?.loading = false
             }, receiveValue: { [weak self] result in
                 self?.myReviews = [:]
-                for (index) in 0..<result.movies.count {
-                    self?.myReviews[result.movies[index]] = result.reviews.first(where: {$0.movie_id == result.movies[index].movieId})
+                if let movies = result.movies, let reviews = result.reviews {
+                    for (index) in 0..<movies.count {
+                        self?.myReviews[movies[index]] = reviews.first(where: {$0.movie_id == movies[index].movieId})
+                    }
                 }
+                
             })
     }
 }

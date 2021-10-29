@@ -59,15 +59,18 @@ extension HomeCategoryListViewModel {
             .sink(receiveCompletion: { [weak self] result in
                 switch result {
                 case .finished:
-                    print("Search Finished")
+                    print("SearchCategory Finished")
                     break
                 case .failure:
-                    print("Search Error: \(result)")
+                    print("SearchCategory Error: \(result)")
                     break
                 }
                 self?.loading = false
             }, receiveValue: { [weak self] value in
-                self?.movies = value.movies.filter{$0.movie.posterImgURL != nil}
+                if let movies = value.movies {
+                    self?.movies = movies.filter{$0.movie.posterImgURL != nil}
+                }
+                
             })
     }
 }

@@ -51,7 +51,7 @@ struct MovieDetail: View {
                         
                     })
                     
-                    Text(movie.movie.title)
+                    Text(movie.movie.title ?? "")
                         .font(.system(size: 26, weight: .bold))
                         .foregroundColor(.white)
                 
@@ -136,10 +136,10 @@ extension MovieDetail {
                     .frame(width: 100, height: 150)
                 
                 VStack(alignment: .leading) {
-                    Text(movie.movie.title)
+                    Text(movie.movie.title ?? "")
                         .font(.largeTitle)
                         .bold()
-                    Text("\(movie.movie.engTitle) (\(movie.movie.productionYear))")
+                    Text("\(movie.movie.engTitle ?? "") (\(movie.movie.productionYear ?? ""))")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                     Spacer()
@@ -227,12 +227,12 @@ extension MovieDetail {
 
 extension MovieDetail {
     @ViewBuilder
-    func createMemo(memo: String, memoTitle: String) -> some View{
+    func createMemo(memo: String?, memoTitle: String?) -> some View{
         VStack (alignment: .leading){
-            Text(memo)
+            Text(memo ?? "")
                 .font(.system(size: 14, weight: .semibold))
                 .padding(.leading, memoTitle == "시간" ? -4 : 0)
-            Text(memoTitle)
+            Text(memoTitle ?? "")
                 .font(.system(size: 12))
                 .foregroundColor(.gray)
             

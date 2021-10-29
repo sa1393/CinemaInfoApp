@@ -35,7 +35,7 @@ struct ReviewHistoryView: View {
                             VStack {
                                 
                                 HStack {
-                                    Text(movie.title)
+                                    Text(movie.title ?? "")
                                         .font(.system(size: 18, weight: .bold))
                                     
                                     Spacer()

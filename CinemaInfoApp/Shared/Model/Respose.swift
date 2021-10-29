@@ -1,7 +1,7 @@
 import Foundation
 
 struct MovieResponse: Codable {
-    let movies: [AllMovie]
+    let movies: [AllMovie]?
     
     enum CodingKeys: String, CodingKey {
         case movies = "movies"
@@ -9,15 +9,15 @@ struct MovieResponse: Codable {
 }
 
 struct ResultBoolResponse: Codable {
-    let result: Bool
+    let result: Bool?
 }
 
 struct ResultStringResponse: Codable {
-    let result: String
+    let result: String?
 }
 
 struct MovieRankResponse: Codable {
-    let movies: [RankMovie]
+    let movies: [RankMovie]?
     
     enum CodingKeys: String, CodingKey {
         case movies = "movies"
@@ -25,7 +25,7 @@ struct MovieRankResponse: Codable {
 }
 
 struct MovieRatingResponse: Codable {
-    let movies: [RatingMovie]
+    let movies: [RatingMovie]?
     
     enum CodingKeys: String, CodingKey {
         case movies = "movies"
@@ -34,7 +34,7 @@ struct MovieRatingResponse: Codable {
 
 
 struct ReviewResponse: Codable {
-    let reviews: [Review]
+    let reviews: [Review]?
     
     enum CodingKeys: String, CodingKey {
         case reviews = "reviews"
@@ -42,6 +42,6 @@ struct ReviewResponse: Codable {
 }
 
 struct MyReviewResponse: Codable {
-    let movies: [AllMovie]
-    let reviews: [Review]
+    let movies: [AllMovie]?
+    let reviews: [Review]?
 }

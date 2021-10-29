@@ -129,6 +129,20 @@ struct ReviewEditView: View {
                 Spacer()
 
             }
+            if reviewEditViewModel.loading {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .frame(width: 30, height: 30)
+                        Spacer()
+                    }
+                    Spacer()
+                }
+                .background(Color.black.opacity(0.9))
+            }
         }
         .foregroundColor(Color.white)
         .navigationBarHidden(true)

@@ -36,14 +36,14 @@ struct AllReviewView: View {
                             ReviewView(review: review, movie: movieDetailVM.movie, myReview: myReview?.idx == review.idx ? true : false, allReviewViewModel: allReviewViewModel) {
                                 allReviewViewModel.firstLoadComment(movieId: movieDetailVM.movie.movie.movieId, size: allReviewViewModel.page)
                             }
-                                .onAppear {
-                                    print(index)
-                                    print(allReviewViewModel.page)
-                                    if allReviewViewModel.reviews.firstIndex(where: {$0.idx == review.idx}) == allReviewViewModel.page - 1 && !allReviewViewModel.last {
-                                        print("last index")
-                                        allReviewViewModel.loadMoreComment(movieId: movieDetailVM.movie.movie.movieId)
-                                    }
+                            .onAppear {
+                                print(index)
+                                print(allReviewViewModel.page)
+                                if allReviewViewModel.reviews.firstIndex(where: {$0.idx == review.idx}) == allReviewViewModel.page - 1 && !allReviewViewModel.last {
+                                    print("last index")
+                                    allReviewViewModel.loadMoreComment(movieId: movieDetailVM.movie.movie.movieId)
                                 }
+                            }
                         }
                        
                         if allReviewViewModel.reviewLoading {

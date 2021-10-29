@@ -7,8 +7,11 @@ struct HomeRankMovieSlide: View {
     var memoString: String = ""
     @State var currentMovieIndex: Int = 0
     
-    
-    
+    let gradient1 = LinearGradient(
+        gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.3), Color.black.opacity(1)]),
+        startPoint: .center,
+        endPoint: .top
+    )
     
     let gradient = LinearGradient(
         gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.4),  Color.black.opacity(1)]),
@@ -28,12 +31,13 @@ struct HomeRankMovieSlide: View {
                                 ZStack() {
                                     ProgressView()
                                         .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                    
                                 }
                                 
                             }
+                            .edgesIgnoringSafeArea(.top)
                             .scaledToFit()
                             .overlay(gradient)
+                            .overlay(gradient1)
                             .tag(index)
                     }
                     else {
@@ -66,7 +70,7 @@ struct HomeRankMovieSlide: View {
                         .frame(width: 4, height: 4)
                         .padding(.horizontal, -1)
                     
-                    Text(movies[currentMovieIndex].movie.productionCountry)
+                    Text(movies[currentMovieIndex].movie.productionCountry ?? "")
                         
                 }
                 .font(.system(size: 12, weight: .bold))
@@ -90,7 +94,9 @@ struct HomeRankMovieSlide: View {
                 }
                 .padding(.horizontal, 50)
             }
+            .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth / 2 * 3)
             .foregroundColor(Color.white)
+            
         }
     }
 }

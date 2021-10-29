@@ -51,13 +51,21 @@ extension SigninViewModel {
     func CheckLogin() {
         MovieDB.loginCheck()
             .mapError({ (error) -> Error in
-                print("error \(error)")
+                
                 return error
             })
-            .sink(receiveCompletion: {
-                print("tuResult: \($0)")
-            }, receiveValue: {
-                print("tuValue: \($0)")
+            .sink(receiveCompletion: { result in
+                switch result {
+                case .finished :
+                    print("CheckLogin Finished")
+                case .failure(let error) :
+                    print("CheckLogin Error \(error)")
+                }
+                
+            }, receiveValue: { value in
+                if let user = value.result {
+                    print("CheckLogin value: \(value)")
+                } 
             })
     }
     
@@ -93,7 +101,7 @@ extension SigninViewModel {
                     self?.loading = false
                 }
                 
-            }, receiveValue: { [weak self] value in
+            }, receiveValue: { value in
                 print("SignIn Value: \(value)")
             })
     }

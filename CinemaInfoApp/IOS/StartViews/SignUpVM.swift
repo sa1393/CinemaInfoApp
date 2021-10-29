@@ -23,7 +23,7 @@ class SignUpViewModel: ObservableObject {
     @Published var offSign = false
     var cancellable: AnyCancellable?
     
-    @Published var showingFailAlert:Bool = false
+    @Published var showingFailAlert: Bool = false
 
     func offSignView() {
         offSign = true
@@ -73,16 +73,17 @@ extension SignUpViewModel {
             .sink(receiveCompletion: { [weak self] result in
                 switch result {
                 case .finished :
-                    
                     print("SignUp Finished")
+                    
+                    self?.offSignView()
                 case .failure(let error) :
+                    self?.showingFailAlert = true
                     print("SignUp Error: \(error)")
                 }
-                
-                self?.offSignView()
+
                 self?.loading = false
-            }, receiveValue: {
-                print("SignUp Value: \($0.result)")
+            }, receiveValue: { _ in
+                
             })
     }
 }

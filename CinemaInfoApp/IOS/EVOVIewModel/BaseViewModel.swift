@@ -31,9 +31,8 @@ class BaseViewModel: ObservableObject {
     
     init() {
         launchAfter = UserDefaults.standard.bool(forKey: "LaunchAfter")
-        launchAfter = false
+
         print(launchAfter)
-        
     }
 }
 

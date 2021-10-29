@@ -30,7 +30,9 @@ extension MovieDetailVM {
         loading = true
         let sizeURL = "&offset=\(offset)&size=\(size)"
         
-        MovieDB.getRequest("movies/review?movie_id=", endPoint: "\(movie.movie.movieId)", size: sizeURL, type: ReviewResponse(reviews: []))
+        guard let movieId = movie.movie.movieId else{return}
+        print(movieId)
+        MovieDB.getRequest("movies/review?movie_id=", endPoint: "\(movieId)", size: sizeURL, type: ReviewResponse(reviews: []))
             .mapError({ (error) -> Error in
                 return error
             })
@@ -44,31 +46,13 @@ extension MovieDetailVM {
                 self?.loading = false
             }, receiveValue: { [weak self] value in
                 self?.reviews = []
-                self?.reviews = value.reviews
+                
+                if let reviews = value.reviews {
+                    self?.reviews = reviews
+                }
             })
     }
-    
-//    func fetchMyReivew() {
-//        print(movie.movie.title)
-//
-//        MovieDB.myMovieReview(movieTitle: "\(movie.movie.title)")
-//            .mapError({ (error) -> Error in
-//                return error
-//            })
-//            .sink(receiveCompletion: { result in
-//                switch result {
-//                case .finished :
-//                    print("\(self.movie.movie.title) MyMovieReview Finished")
-//                case .failure(let error) :
-//                    print("\(self.movie.movie.title) MyMovieReview Error: \(error)")
-//                }
-//                self.loading = false
-//            }, receiveValue: { [weak self] value in
-//
-//                print(value)
-//            })
-//    }
-    
+
     func fetchMyReviews() {
         myReviewLoading = true
         MovieDB.myReview()
@@ -85,11 +69,14 @@ extension MovieDetailVM {
                 self?.myReviewLoading = false
             }, receiveValue: { [weak self] result in
                 self?.myReview = nil
-                for (review) in result.reviews {
-                    if self?.movie.movie.movieId == review.movie_id {
-                        self?.myReview = review
+                if let reviews = result.reviews {
+                    for (review) in reviews {
+                        if self?.movie.movie.movieId == review.movie_id {
+                            self?.myReview = review
+                        }
                     }
                 }
+                
             })
     }
 }

@@ -58,7 +58,7 @@ struct MovieDetailSwitcher: View {
             VStack(alignment: .leading) {
                 switch currentTab {
                 case .story:
-                    Text(movie.movie.story)
+                    Text(movie.movie.story ?? "")
                         .font(.system(size: 18, weight: .semibold))
                 case .commnet:
                     if movieDetailVM.loading {

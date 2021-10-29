@@ -125,7 +125,7 @@ struct SignInView: View {
         }
         .navigationBarHidden(true)
         .alert(isPresented: $signInViewModel.showingFailAlert) {
-            Alert(title: Text("로그인"), message: Text("로그인에 실패했습니다."), dismissButton: .default(Text("Dismiss").foregroundColor(Color.red)))
+            Alert(title: Text("로그인"), message: Text("로그인에 실패했습니다."), dismissButton: .default(Text("Dismiss")))
         }
         .onAppear {
             self.signInViewModel.baseViewModel = self.baseViewModel

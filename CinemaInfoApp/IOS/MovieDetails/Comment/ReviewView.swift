@@ -1,12 +1,12 @@
 import SwiftUI
 
 struct ReviewView: View {
-    var screenX = UIScreen.main.bounds.width
     var review: Review
     var lastReviewStar: Int
     var myReview: Bool
     var movie: MovieProtocol
     @ObservedObject var allReviewViewModel: AllReviewViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
     
     @State var reviewMenu: Bool = false
@@ -15,19 +15,24 @@ struct ReviewView: View {
     
     init(review: Review, movie: MovieProtocol, myReview: Bool, allReviewViewModel: AllReviewViewModel, reloadData:@escaping () -> Void) {
         self.review = review
-        self.myReview = myReview
-        
-        lastReviewStar = review.ratingNum % 2
-        self.allReviewViewModel = allReviewViewModel
         self.movie = movie
+        self.myReview = myReview
+        self.allReviewViewModel = allReviewViewModel
         self.reloadData = reloadData
+        
+        if let ratingNum = review.ratingNum {
+            lastReviewStar = ratingNum % 2
+        }
+        else {
+            lastReviewStar = 0
+        }
     }
     
     var body: some View {
         ZStack {
             VStack {
                 HStack {
-                    Text(review.writer)
+                    Text(review.writer ?? "")
                     Spacer()
                     
                     Button(action: {
@@ -57,23 +62,26 @@ struct ReviewView: View {
                 }
                 
                 HStack {
-                    if review.ratingNum <= 0 && lastReviewStar <= 0 {
-                        Text("평점 없음")
-                    }
-                    else {
-                        ForEach(0..<review.ratingNum / 2, id: \.self) { num in
-                            Image(systemName: "star.fill")
-                                .padding(.horizontal, -4)
+                    if let ratingNum = review.ratingNum {
+                        if ratingNum <= 0 && lastReviewStar <= 0 {
+                            Text("평점 없음")
                         }
-                        
-                        if lastReviewStar > 0 {
-                            Image(systemName: "star.leadinghalf.filled")
+                        else {
+                            ForEach(0..<ratingNum / 2, id: \.self) { num in
+                                Image(systemName: "star.fill")
+                                    .padding(.horizontal, -4)
+                            }
+                            
+                            if lastReviewStar > 0 {
+                                Image(systemName: "star.leadinghalf.filled")
+                            }
                         }
                     }
+                    
                     
                     Spacer()
                     
-                    Text(review.created)
+                    Text(review.created ?? "")
                         .foregroundColor(.gray)
                     
                 }
@@ -83,12 +91,12 @@ struct ReviewView: View {
                 .foregroundColor(.yellow)
                 
                 HStack() {
-                    Text(review.comment)
+                    Text(review.comment ?? "")
                     Spacer()
                 }
                 
                 Rectangle()
-                    .frame(width: screenX * 0.97, height: 1)
+                    .frame(width: UIScreen.screenWidth * 0.97, height: 1)
                     .padding(.vertical, 4)
                     .foregroundColor(.gray)
                     
@@ -100,7 +108,7 @@ struct ReviewView: View {
                     Spacer()
                     
                     VStack(alignment: .leading) {
-                        if myReview {
+                        if myReview && baseViewModel.isLogin {
                             NavigationLink(destination: {
                                 NavigationLazyView(ReviewEditView(movie: movie, review: review))
                             }, label: {

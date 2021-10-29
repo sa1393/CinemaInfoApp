@@ -126,6 +126,20 @@ struct ReviewWrite: View {
                 Spacer()
 
             }
+            if reviewWriteViewModel.loding {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .frame(width: 30, height: 30)
+                        Spacer()
+                    }
+                    Spacer()
+                }
+                .background(Color.black.opacity(0.9))
+            }
         }
         .foregroundColor(Color.white)
         .navigationBarHidden(true)

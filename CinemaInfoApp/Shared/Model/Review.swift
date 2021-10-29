@@ -2,14 +2,14 @@ import Foundation
 
 struct Review: Codable, Identifiable, Hashable {
     var id = UUID().uuidString
-    var idx: Int
-    var movie_id: String
-    var site: String
-    var created: String
-    var writer: String
-    var comment: String
-    var likeNum: Int
-    var ratingNum: Int
+    var idx: Int?
+    var movie_id: String?
+    var site: String?
+    var created: String?
+    var writer: String?
+    var comment: String?
+    var likeNum: Int?
+    var ratingNum: Int?
     
     enum CodingKeys: String, CodingKey {
         case idx

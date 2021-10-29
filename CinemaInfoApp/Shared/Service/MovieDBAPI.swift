@@ -121,7 +121,7 @@ extension MovieDB {
     
     static func myMovieReview(movieTitle: String) -> AnyPublisher<MovieResponse, Error>  {
         
-        var urlStr = "\(baseURL)users/search/beta?title=\(movieTitle)"
+        let urlStr = "\(baseURL)users/search/beta?title=\(movieTitle)"
 
         var resultURL: URL?
         if let encodedStr = urlStr.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {

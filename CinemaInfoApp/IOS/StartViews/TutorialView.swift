@@ -75,7 +75,6 @@ struct TutorialView: View {
 
                 }
 
-                //page tab bar and button
                 VStack(alignment: .trailing) {
                     Spacer()
                     VStack {

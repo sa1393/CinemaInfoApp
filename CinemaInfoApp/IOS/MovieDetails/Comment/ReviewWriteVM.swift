@@ -21,25 +21,29 @@ class ReviewWriteViewModel: ObservableObject {
 }
 
 extension ReviewWriteViewModel {
-    func ReviewWrite(movieId: String, rating: Int) {
+    func ReviewWrite(movieId: String?, rating: Int) {
         self.loding = true
-        MovieDB.writeReview(movieId: movieId, comment: comment, ratingNum: rating)
-            .mapError{ (error) -> Error in
-                
-                return error
-            }
-            .sink(receiveCompletion: { [weak self] result in
-                switch result {
-                case .finished :
-                    print("ReviewWrite Finished")
-                case .failure(let error) :
-                    print("ReviewWrite Error: \(error)")
+        
+        if let movieId = movieId {
+            MovieDB.writeReview(movieId: movieId, comment: comment, ratingNum: rating)
+                .mapError{ (error) -> Error in
+                    
+                    return error
                 }
-                self?.loding = false
-                self?.offReviewView()
-                
-            }, receiveValue: {
-                print("review Write value: \($0)")
-            })
+                .sink(receiveCompletion: { [weak self] result in
+                    switch result {
+                    case .finished :
+                        print("ReviewWrite Finished")
+                    case .failure(let error) :
+                        print("ReviewWrite Error: \(error)")
+                    }
+                    self?.loding = false
+                    self?.offReviewView()
+                    
+                }, receiveValue: {
+                    print("review Write value: \($0)")
+                })
+        }
+        
     }
 }

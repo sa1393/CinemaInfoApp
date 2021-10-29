@@ -1,51 +1,73 @@
 import Foundation
+import SwiftUI
 
 protocol MovieProtocol{
     var movie: Movie { get }
 }
 
 struct Movie: Hashable, Equatable {
-    var movieId: String
-    var title: String
-    var engTitle: String
-    var productionYear:String
-    var productionCountry: String
-    var sizeType: String
-    var genore: String
-    var productionStatus: String
-    var posterImg: String
-    var releaseDate: String
-    var updateDate: String
-    var memo: String
-    var director: String
-    var actor: String
-    var story: String
+    var movieId: String?
+    var title: String?
+    var engTitle: String?
+    var productionYear: String?
+    var productionCountry: String?
+    var sizeType: String?
+    var genore: String?
+    var productionStatus: String?
+    var posterImg: String?
+    var releaseDate: String?
+    var updateDate: String?
+    var memo: String?
+    var director: String?
+    var actor: String?
+    var story: String?
     
     var posterImgURL: URL? {
-        if posterImg.isEmpty {
+        if let posterImg = posterImg {
+            
+            if posterImg.isEmpty {
+                return nil
+            }
+            else {
+                if let url = URL(string: "\(SecretText.baseURL)images/beta/\(posterImg)") {
+                    return url
+                }else {
+                    return nil
+                }
+            }
+        }
+        else {
             return nil
         }
         
-        if let url = URL(string: "\(SecretText.baseURL)images/beta/\(posterImg)") {
-            return url
-        }else {
-            return nil
-        }
+        
     }
     
     
     var allGenore: [GenoreType?] {
-        let tempGenore = genore.trimmingCharacters(in: [" "])
-        let genoreArr = tempGenore.components(separatedBy: ",")
-        
-        let resultGenore = genoreArr.map{GenoreType(rawValue: "\($0)") ?? GenoreType.guitar}
-        return resultGenore
+        if let genore = genore {
+            let tempGenore = genore.trimmingCharacters(in: [" "])
+            let genoreArr = tempGenore.components(separatedBy: ",")
+            let resultGenore = genoreArr.map{GenoreType(rawValue: "\($0)") ?? GenoreType.guitar}
+            
+            return resultGenore
+        }
+        else {
+            return []
+        }
     }
     
     var memos: [String] {
-        let tempMemo = memo.trimmingCharacters(in: [" "])
+        if let memo = memo {
+            let tempMemo = memo.trimmingCharacters(in: [" "])
+            return tempMemo.components(separatedBy: "|")
+        }
+        else {
+            return []
+        }
+       
         
-        return tempMemo.components(separatedBy: "|")
+       
     }
     
     var duration: String {
