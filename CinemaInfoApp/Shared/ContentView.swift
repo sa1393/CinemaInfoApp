@@ -1,51 +1,46 @@
 import SwiftUI
+import Introspect
+import UIKit
 
 struct ContentView: View{
     @EnvironmentObject var baseViewModel: BaseViewModel
-    
+    @State var uiTabarController: UITabBarController?
     @Namespace var animation
-    
+
     var body: some View {
         ZStack {
             Color.black
-                .edgesIgnoringSafeArea(.all)
+                .edgesIgnoringSafeArea(.bottom)
             GeometryReader { proxy in
-
-                TabView(selection: $baseViewModel.selected) {
-                    HomeView()
-                        .tag(Tab.home)
-                    SearchView()
-                        .tag(Tab.search)
-
-                    Color.black
-                        .edgesIgnoringSafeArea(.all)
-                        .tag(Tab.more)
-
+                if !baseViewModel.launchAfter {
+                    TutorialView()
                 }
-                .overlay(
-                    HStack {
-                        if baseViewModel.showTabbar {
-                            TabButton(tab: .home, systemIcon: "house.fill")
-                            TabButton(tab: .search, systemIcon: "magnifyingglass")
-                            TabButton(tab: .more, systemIcon: "text.justify")
+                else {
+                    NavigationView {
+                        TabView(selection: $baseViewModel.selected) {
+                            HomeView()
+                                .tag(Tab.home)
+                            SearchView()
+                                .tag(Tab.search)
+                            MyInfoView()
+                                .tag(Tab.my)
                         }
-                        else {
-                            Rectangle()
-                                .foregroundColor(Color.black)
-                        }
+                        .overlay(
+                            HStack {
+                                TabButton(tab: .home, systemIcon: "house.fill")
+                                TabButton(tab: .search, systemIcon: "magnifyingglass")
+                                TabButton(tab: .my, systemIcon: "person.fill")
+                            }
+                            .frame(height: proxy.size.height / 10)
+                            .background(
+                                Color.black.opacity(1)
+                                    .ignoresSafeArea(.container, edges: .bottom)
+                            )
+                            , alignment: .bottom
+                        )
                     }
-                    .frame(height: proxy.size.height / 10)
-                    .background(
-                        Color.black.opacity(1)
-                            .ignoresSafeArea(.container, edges: .bottom)
-                    )
-                    
-                    , alignment: .bottom
-                )
-            }
-        
-            if !baseViewModel.launchAfter {
-                TutorialView()
+                    .navigationViewStyle(.stack)
+                }
             }
         }
         .preferredColorScheme(.dark)
@@ -100,8 +95,6 @@ extension ContentView {
     }
 }
 
-
-
 struct ContentView_Previews: PreviewProvider {
     
     static var previews: some View {
@@ -112,7 +105,9 @@ struct ContentView_Previews: PreviewProvider {
             .environmentObject(BaseViewModel())
             .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
         
+        ContentView()
+            .environmentObject(BaseViewModel())
+            .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+        
     }
 }
-
-

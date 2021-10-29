@@ -1,22 +1,21 @@
 import Foundation
 
-
 struct User: Codable {
     var id: String?
     var name: String?
     var pwd: String?
-    var profileURL: String?
+    var profile: Data?
     
     enum Codingkeys: String, CodingKey {
         case id
         case name
         case pwd
-        case profileURL = "profile_url"
+        case profile = "img"
     }
 }
 
 struct UserResponse: Codable {
-    var result: User
+    var result: User?
 }
 
 struct LoginUser: Codable {

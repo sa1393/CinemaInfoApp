@@ -98,7 +98,8 @@ struct Movie: Hashable, Equatable {
 
 enum AgeType : String, CaseIterable {
     case adult = "청소년관람불가"
-    case youth = "15세이상관람가"
+    case youth = "15세관람가"
+    case youthAfter = "15세이상관람가"
     case child = "12세이상관람가"
     case all = "전체관람가"
 }

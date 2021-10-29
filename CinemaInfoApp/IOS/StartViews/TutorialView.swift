@@ -2,14 +2,13 @@ import SwiftUI
 
 struct TutorialView: View {
     @EnvironmentObject var baseViewModel: BaseViewModel
-    @StateObject var startViewModel = TutorialViewModel()
     
     var body: some View {
         NavigationView {
             ZStack {
                 Color.black
                     .edgesIgnoringSafeArea(.all)
-//
+
                 VStack {
                     TabView() {
                         ZStack {
@@ -86,7 +85,7 @@ struct TutorialView: View {
                         }, label: {
                             HStack {
                                 Spacer()
-                                Text("시작하기")
+                                Text(baseViewModel.isLogin ? "시작하기" : "로그인 없이 시작하기")
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundColor(Color.white)
                                 Spacer()
@@ -110,14 +109,17 @@ struct TutorialView: View {
                             .foregroundColor(Color.blue)
                         
                         Spacer()
-                        NavigationLink(destination: {
-                            LoginView()
-                                .environmentObject(startViewModel)
-                        }, label: {
-                            Text("로그인")
-                                .foregroundColor(Color.white)
-                                .font(.system(size: 20, weight: .bold))
-                        })
+                        if !baseViewModel.isLogin {
+                            NavigationLink(destination: {
+                                SignInView()
+
+                            }, label: {
+                                Text("로그인")
+                                    .foregroundColor(Color.white)
+                                    .font(.system(size: 20, weight: .bold))
+                            })
+                        }
+                        
                     }
                     .padding(.vertical, 12)
                     .padding(.horizontal, 8)
@@ -136,5 +138,6 @@ struct TutorialView: View {
 struct StartView_Previews: PreviewProvider {
     static var previews: some View {
         TutorialView()
+            .environmentObject(BaseViewModel())
     }
 }

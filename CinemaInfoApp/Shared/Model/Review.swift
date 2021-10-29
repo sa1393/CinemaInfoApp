@@ -23,7 +23,7 @@ struct Review: Codable, Identifiable, Hashable {
     }
 }
 
-struct ReviewPost: Codable {
+struct ReviewInsert: Codable {
     var movieId: String
     var comment: String
     var ratingNum: Int
@@ -32,5 +32,31 @@ struct ReviewPost: Codable {
         case movieId = "movie_id"
         case comment
         case ratingNum = "rating_num"
+    }
+}
+
+struct ReviewEdit: Codable {
+    var idx: Int
+    var movieId: String
+    var comment: String
+    var ratingNum: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case idx
+        case movieId = "movie_id"
+        case comment
+        case ratingNum = "rating_num"
+    }
+}
+
+
+struct ReviewDelete: Codable {
+    var idx: Int
+    var movieId: String
+    
+    
+    enum CodingKeys: String, CodingKey {
+        case idx
+        case movieId = "movie_id"
     }
 }

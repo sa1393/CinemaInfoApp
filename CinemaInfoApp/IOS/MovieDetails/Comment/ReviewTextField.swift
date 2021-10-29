@@ -1,13 +1,6 @@
-//
-//  CommentTextFile.swift
-//  CinemaInfoApp
-//
-//  Created by MEESEON KANG on 2021/10/14.
-//
-
 import SwiftUI
 
-struct CommentTextField: View {
+struct ReviewTextField: View {
     @State var isTapped: Bool = false
     @Binding var text: String
     
@@ -48,6 +41,6 @@ struct CommentTextField: View {
 
 struct CommentTextFile_Previews: PreviewProvider {
     static var previews: some View {
-        CommentWrite(movie: exampleMovie1)
+        ReviewWrite(movie: exampleMovie1)
     }
 }

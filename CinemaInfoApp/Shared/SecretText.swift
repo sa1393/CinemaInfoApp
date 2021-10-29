@@ -1,5 +1,6 @@
 import Foundation
 
 struct SecretText {
-    static var baseURL = "http://15.164.166.248:8080/"
+    static var baseURL = "http://ny030303.duckdns.org:28080/"
 }
+

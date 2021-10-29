@@ -4,9 +4,6 @@ struct HomeView: View {
     @Environment(\.isPreview) var isPreview
     @StateObject var homeVM: HomeVM = HomeVM()
     
-    //유저 정보창
-    @State var showUserWindow = false
-    
     let gradient1 = LinearGradient(
         gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.85), Color.black.opacity(0.9)]),
         startPoint: .bottom,
@@ -14,56 +11,64 @@ struct HomeView: View {
     )
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.black
-                    .edgesIgnoringSafeArea(.all)
-                
-                VStack {
-                    GeometryReader { proxy in
-                        ScrollView(.vertical, showsIndicators: false){
-                            LazyVStack {
-                                ZStack {
-                                    VStack(alignment: .leading) {
-                                        if isPreview {
-                                            HomeRankMovieSlide(movies: [exampleMovie3, exampleMovie2, exampleMovie1])
-                                                .frame(width: proxy.size.width, height: proxy.size.width / 2 * 3)
-                                        }
-                                        else {
-                                            if homeVM.rankMovies.count > 0 {
-                                                HomeRankMovieSlide(movies: homeVM.rankMovies)
-                                                    .frame(width: proxy.size.width, height: proxy.size.width / 2 * 3)
+        ZStack {
+            Color.black
+
+            VStack {
+                GeometryReader { proxy in
+                    ScrollView(.vertical, showsIndicators: false){
+                        LazyVStack {
+                            ZStack {
+                                VStack(alignment: .leading) {
+                                    if homeVM.rankMovies.count > 0 {
+                                        HomeRankMovieSlide(movies: homeVM.rankMovies)
+                                            .frame(width: proxy.size.width, height: proxy.size.width / 2 * 3)
+                                    }
+                                    else {
+                                        VStack(alignment: .center) {
+                                            HStack(alignment: .center){
+                                                ProgressView()
+                                                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                                    .frame(width: 30, height: 30)
                                             }
                                         }
+                                        .frame(width: proxy.size.width, height: proxy.size.width / 2 * 3)
                                     }
-                                    
-                                    VStack {
-                                        topMenu
-                                            .frame(height: proxy.size.height / 5)
-                                            .background(gradient1)
-                                        
-                                        Spacer()
-                                    }
+
                                 }
                                 
-                                ForEach(homeVM.allCategories, id: \.self) { key in
-                                    HomeCategoryList(movies: homeVM.categoryMovies[key]!, listName: key)
+                                VStack {
+                                    topMenu
+                                        .frame(height: proxy.size.height / 5)
+                                        .background(gradient1)
+                                    
+                                    Spacer()
                                 }
-                                .padding(.horizontal, 6)
                             }
-                            .padding(.bottom, UIScreen.tabbarHeight)
+                            
+                            ForEach(homeVM.allCategories, id: \.self) { key in
+                                
+                                HomeCategoryList(listName: key, title: homeVM.categoryMovies[key]?.title, genore: homeVM.categoryMovies[key]?.genore, rated: homeVM.categoryMovies[key]?.rated, size: homeVM.categoryMovies[key]?.size)
+                            }
+                            .padding(.horizontal, 6)
+                            
                         }
-                        
+                        .padding(.bottom, UIScreen.tabbarHeight)
                     }
+                    
                 }
-                
-                .edgesIgnoringSafeArea(.top)
             }
-            .foregroundColor(.white)
-            .navigationBarHidden(true)
-            .navigationBarBackButtonHidden(true)
         }
-        .navigationViewStyle(.stack)
+        .foregroundColor(.white)
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
+        .onAppear {
+            homeVM.fetchRankMovies(size: 5)
+        }
+        .onDisappear {
+            print("disapeper")
+        }
+        .preferredColorScheme(.dark)
     }
 }
 
@@ -74,16 +79,20 @@ enum ScreeningState: String, CaseIterable {
 
 extension HomeView{
     var topMenu: some View {
-        HStack(alignment: .top) {
-            Image(systemName: "tortoise.fill")
-                .resizable()
-                .frame(width: 50, height: 30)
-                .foregroundColor(.blue)
+        VStack {
             
+            HStack(alignment: .top) {
+                Image(systemName: "tortoise.fill")
+                    .resizable()
+                    .frame(width: 50, height: 30)
+                    .foregroundColor(.blue)
+                
+                Spacer()
+                
+            }
+            .padding(.horizontal, 8)
             Spacer()
-            
         }
-        .padding(.horizontal, 8)
         
     }
 }

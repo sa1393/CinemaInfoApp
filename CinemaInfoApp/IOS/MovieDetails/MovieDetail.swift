@@ -4,11 +4,13 @@ import Foundation
 
 struct MovieDetail: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
     var movie: MovieProtocol
     var screening: Bool
     
     @StateObject var movieDetailVM: MovieDetailVM = MovieDetailVM()
+    @ObservedObject var allReviewViewModel: AllReviewViewModel = AllReviewViewModel()
     
     let gradient = LinearGradient(
         gradient: Gradient(colors: [Color.black.opacity(0),  Color.black.opacity(1)]),
@@ -36,10 +38,9 @@ struct MovieDetail: View {
     var body: some View {
         ZStack(alignment: .topLeading) {
             Color.black
-                .edgesIgnoringSafeArea(.all)
             
             VStack {
-                HStack {
+                HStack(spacing: 35) {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
                     }, label: {
@@ -49,13 +50,17 @@ struct MovieDetail: View {
                             .foregroundColor(.white)
                         
                     })
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 18)
                     
+                    Text(movie.movie.title)
+                        .font(.system(size: 26, weight: .bold))
+                        .foregroundColor(.white)
+                
                     Spacer()
                 }
+                .padding(.vertical, 8)
+                .padding(.horizontal, 18)
                 
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     ZStack {
                         detailImage
                         
@@ -70,9 +75,20 @@ struct MovieDetail: View {
         }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
+        .onTapGesture {
+            allReviewViewModel.editMode = false
+            allReviewViewModel.menuControl?.wrappedValue = false
+        }
         .onAppear() {
             movieDetailVM.movie = movie
-            movieDetailVM.fetchReviews()
+            
+            if baseViewModel.isLogin {
+                movieDetailVM.fetchMyReviews()
+            }
+            withAnimation(.easeInOut.speed(1.5)) {
+                movieDetailVM.previewComment()
+            }
+         
         }
         
     }
@@ -80,32 +96,29 @@ struct MovieDetail: View {
 
 extension MovieDetail {
     var detailImage: some View {
-        ZStack {
-            VStack {
-                if movie.movie.posterImgURL != nil {
-                    KFImage(movie.movie.posterImgURL)
-                        .placeholder {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+        VStack {
+            if movie.movie.posterImgURL != nil {
+                KFImage(movie.movie.posterImgURL)
+                    .placeholder {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    }
+                    .resizable()
+                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth / 2 * 3)
+                    .overlay(
+                        ZStack {
+                            gradient
+                            gradient2
                         }
-                        .resizable()
-                        .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight / 3 * 2)
-                    
-                }
-                else {
-                    Text("이미지 없음")
-                }
+                       
+                    )
                 
-                Spacer()
             }
-            VStack {
-                Rectangle()
-                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight / 3 * 2)
-                    .foregroundColor(.clear)
-                    .background(gradient)
-                    .background(gradient2)
-                Spacer()
+            else {
+                Text("이미지 없음")
             }
+            
+            Spacer()
         }
     }
 }
@@ -113,7 +126,15 @@ extension MovieDetail {
 extension MovieDetail {
     var content: some View {
         VStack {
-            HStack {
+            HStack(spacing: 25) {
+                KFImage(movie.movie.posterImgURL)
+                    .placeholder {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    }
+                    .resizable()
+                    .frame(width: 100, height: 150)
+                
                 VStack(alignment: .leading) {
                     Text(movie.movie.title)
                         .font(.largeTitle)
@@ -121,9 +142,12 @@ extension MovieDetail {
                     Text("\(movie.movie.engTitle) (\(movie.movie.productionYear))")
                         .font(.subheadline)
                         .foregroundColor(.gray)
+                    Spacer()
+
                 }
                 Spacer()
             }
+            .frame(height: 150)
             
             HStack() {
                 createMemo(memo: movie.movie.duration, memoTitle: "시간")
@@ -137,11 +161,67 @@ extension MovieDetail {
             }
             .padding(.vertical, 25)
             
-            MovieDetailSwitcher(movieDetailVM: movieDetailVM, movie: movie, screening: screening)
+            VStack(alignment: .center) {
+                if movieDetailVM.myReviewLoading {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        Spacer()
+                    }
+                }
+                else {
+                    if let myReview = movieDetailVM.myReview {
+                        Text("내가 쓴 댓글")
+                            .font(.system(size: 18, weight: .bold))
+                        
+                        ReviewView(review: myReview, movie: movie, myReview: true, allReviewViewModel: allReviewViewModel) {
+                            movieDetailVM.fetchMyReviews()
+                            movieDetailVM.fetchReviews(offset: 0, size: 4)
+                        }
+                    } else {
+                        if baseViewModel.isLogin {
+                            HStack {
+                                Text("내가 쓴 리뷰가 없습니다.")
+                                    .font(.system(size: 18, weight: .semibold))
+                                Spacer()
+                                NavigationLink(destination: {
+                                    ReviewWrite(movie: movie)
+                                }, label: {
+                                    Image(systemName: "pencil")
+                                    Text("리뷰 쓰기")
+                                        .font(.system(size: 18, weight: .semibold))
+                                })
+                            }
+                        }
+                        else {
+                            HStack {
+                                Spacer()
+                                NavigationLink(destination: {
+                                    SignInView()
+                                }, label: {
+                                    Image(systemName: "pencil")
+                                    Text("리뷰 쓰기")
+                                        .font(.system(size: 18, weight: .bold))
+                                })
+        
+                                Spacer()
+                                
+                            }
+                        }
+                    }
+                    
+                }
+                
+            }
+            .padding(.vertical, 15)
+
+
+            MovieDetailSwitcher(movieDetailVM: movieDetailVM, movie: movie, screening: screening, myReview: movieDetailVM.myReview, allReviewViewModel: allReviewViewModel)
+            
         }
-        .padding(.top, UIScreen.screenHeight / 3 * 2 - 80)
+        .padding(.top, UIScreen.screenWidth / 2 * 3 - 150)
         .padding(.horizontal, 6)
-        .padding(.bottom, UIScreen.tabbarHeight)
     }
 }
 
@@ -162,16 +242,20 @@ extension MovieDetail {
 
 struct MovieDetail_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            MovieDetail(movie: exampleMovie1)
-                .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
-        }
+
+        MovieDetail(movie: exampleMovie1)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+            .environmentObject(BaseViewModel())
+    
         
-        NavigationView {
-            
-            MovieDetail(movie: exampleMovie3)
-                .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
-        }
+        MovieDetail(movie: exampleMovie3)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
+            .environmentObject(BaseViewModel())
+
+        MovieDetail(movie: exampleMovie3)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
+            .environmentObject(BaseViewModel())
+
         
     }
 }

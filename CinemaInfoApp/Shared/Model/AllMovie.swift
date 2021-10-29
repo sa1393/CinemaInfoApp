@@ -1,6 +1,6 @@
 import Foundation
 
-struct AllMovie : Codable, MovieProtocol{
+struct AllMovie : Hashable, Codable, MovieProtocol{
     var movieId: String
     var title: String
     var engTitle: String

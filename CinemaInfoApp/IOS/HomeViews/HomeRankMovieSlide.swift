@@ -8,6 +8,8 @@ struct HomeRankMovieSlide: View {
     @State var currentMovieIndex: Int = 0
     
     
+    
+    
     let gradient = LinearGradient(
         gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.4),  Color.black.opacity(1)]),
         startPoint: .center,
@@ -23,8 +25,12 @@ struct HomeRankMovieSlide: View {
                             .cancelOnDisappear(true)
                             .resizable()
                             .placeholder{
-                                ProgressView()
-                                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                ZStack() {
+                                    ProgressView()
+                                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                    
+                                }
+                                
                             }
                             .scaledToFit()
                             .overlay(gradient)

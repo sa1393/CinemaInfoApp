@@ -8,6 +8,14 @@ struct MovieResponse: Codable {
     }
 }
 
+struct ResultBoolResponse: Codable {
+    let result: Bool
+}
+
+struct ResultStringResponse: Codable {
+    let result: String
+}
+
 struct MovieRankResponse: Codable {
     let movies: [RankMovie]
     
@@ -33,4 +41,7 @@ struct ReviewResponse: Codable {
     }
 }
 
-
+struct MyReviewResponse: Codable {
+    let movies: [AllMovie]
+    let reviews: [Review]
+}
