@@ -7,6 +7,8 @@ struct HomeRankMovieSlide: View {
     var memoString: String = ""
     @State var currentMovieIndex: Int = 0
     
+    
+    
     let gradient1 = LinearGradient(
         gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.3), Color.black.opacity(1)]),
         startPoint: .center,
@@ -41,7 +43,7 @@ struct HomeRankMovieSlide: View {
                             .tag(index)
                     }
                     else {
-                        Text("이미지 없음")
+                        Text(I18N.noImage)
                     }
                 }
             }
@@ -86,7 +88,8 @@ struct HomeRankMovieSlide: View {
                                 Image(systemName: "info.circle")
                                     .resizable()
                                     .frame(width: 30, height: 30)
-                                Text("Info")
+                                Text(I18N.info
+                                )
                                     .offset(y: -8)
                             }
                         }

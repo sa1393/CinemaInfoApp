@@ -18,7 +18,7 @@ struct UserResponse: Codable {
     var result: User?
 }
 
-struct LoginUser: Codable {
+struct SignUser: Codable {
     var id: String?
     var pwd: String?
 }

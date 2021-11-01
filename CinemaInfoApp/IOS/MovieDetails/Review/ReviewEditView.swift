@@ -7,11 +7,22 @@ struct ReviewEditView: View {
     var movie: MovieProtocol
     var review: Review
     @StateObject var reviewEditViewModel = ReviewEditViewModel()
-    @State var ratingNum: Int = 10
+    @State var currentRatingNum: Int = 10
 
     init(movie: MovieProtocol, review: Review) {
         self.movie = movie
         self.review = review
+        
+        if let ratingNum = review.ratingNum {
+            print(ratingNum)
+            currentRatingNum = ratingNum
+        }
+        
+        if let comment = review.comment {
+            print(comment)
+            reviewEditViewModel.comment = comment
+        }
+        
     }
     
     var body: some View {
@@ -61,14 +72,14 @@ struct ReviewEditView: View {
                                 if index % 2 == 1{
                                     Button(action: {
                                         print("왼쪽 별")
-                                        ratingNum = index
+                                        currentRatingNum = index
                                     }, label: {
                                         Image(systemName: "star.leadinghalf.filled")
                                             .resizable()
                                             .scaledToFill()
                                             .frame(width: 10, height: 20, alignment: .leading)
                                             .clipped()
-                                            .foregroundColor(index <= ratingNum ? .yellow : .white)
+                                            .foregroundColor(index <= currentRatingNum ? .yellow : .white)
                                     })
                                         
                                     
@@ -76,7 +87,7 @@ struct ReviewEditView: View {
                                 else if index % 2 == 0{
                                     Button(action: {
                                         print("오른쪽 별")
-                                        ratingNum = index
+                                        currentRatingNum = index
                                     }, label: {
                                         Image(systemName: "star.leadinghalf.filled")
                                             .resizable()
@@ -84,7 +95,7 @@ struct ReviewEditView: View {
                                             .frame(width: 10, height: 20, alignment: .leading)
                                             .clipped()
                                             .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                                            .foregroundColor(index <= ratingNum ? .yellow : .white)
+                                            .foregroundColor(index <= currentRatingNum ? .yellow : .white)
                                         
                                     })
                                     .offset(x: -8)
@@ -100,7 +111,7 @@ struct ReviewEditView: View {
                     HStack {
                         Spacer()
                         Button(action: {
-                            reviewEditViewModel.ReviewEdit(movieId: movie.movie.movieId, idx: review.idx, rating: ratingNum)
+                            reviewEditViewModel.ReviewEdit(movieId: movie.movie.movieId, idx: review.idx, rating: currentRatingNum)
                             
                             presentationMode.wrappedValue.dismiss()
                         }, label: {

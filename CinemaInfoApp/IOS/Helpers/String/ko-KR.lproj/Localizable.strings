@@ -1,0 +1,42 @@
+"movie_info" = "영화 정보";
+"review_write" = "리뷰 쓰기";
+"setting" = "설정";
+"info" = "Info";
+
+"review_history" = "리뷰 기록";
+
+//Search
+"search_result" = "검색 결과";
+"search_ready" = "이곳에 검색한 영화가 나옵니다.";
+"search_none" = "검색한 영화가 없습니다.";
+"search_hint" = "검색";
+
+
+//Sign
+"signup" = "회원가입";
+"signin" = "로그인";
+"join" = "가입하기";
+"sign_out" = "로그아웃";
+
+"id" = "아이디";
+"pwd" = "비밀번호";
+"name" = "이름";
+"profile" = "프로필";
+"auto_login" = "자동 로그인";
+"pick_profile" = "프로필 고르기";
+
+//Tutorial
+
+"tutorial_movieInfo_content" = "보고싶은 영화들의 정보를\n확인하세요.";
+
+"tutorial_review_content" = "리뷰를 써서 영화의 대한\n생각을 공유하세요.";
+"noLoginStart" = "로그인 없이 시작하기";
+"start" = "시작하기";
+
+"setting" = "설정";
+
+//MSG
+"no_image" = "이미지 없음";
+"signin_fail" = "로그인에 실패했습니다.";
+"signup_fail" = "회원가입에 실패했습니다.";
+"close" = "닫기";

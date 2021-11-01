@@ -5,11 +5,9 @@ struct MyInfoView: View {
     @EnvironmentObject var baseViewModel: BaseViewModel
     
     var body: some View {
-        ZStack {
-            Color.black
-                .ignoresSafeArea()
-            
+        VStack {
             VStack(alignment: .center, spacing: 55) {
+                
                 Image(systemName: "person.circle")
                     .resizable()
                     .frame(width: 60, height: 60)
@@ -19,7 +17,6 @@ struct MyInfoView: View {
                         Text(baseViewModel.user?.name ?? "")
                             .font(.system(size: 24, weight: .bold))
                     }
-                    
                 }
                 else {
                     NavigationLink(destination: {
@@ -27,7 +24,7 @@ struct MyInfoView: View {
                         
                     }, label: {
                         HStack {
-                            Text("로그인")
+                            Text(I18N.signin)
                                 .font(.system(size: 24, weight: .bold))
                             
                             Image(systemName: "chevron.right")
@@ -47,7 +44,7 @@ struct MyInfoView: View {
                                     .font(.system(size: 22, weight: .bold))
                                     .frame(width: 25, height: 25)
                                     .foregroundColor(.gray)
-                                Text("설정")
+                                Text(I18N.setting)
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundColor(.gray)
                                     .padding(4)
@@ -67,7 +64,7 @@ struct MyInfoView: View {
                                     .font(.system(size: 22, weight: .bold))
                                     .frame(width: 25, height: 25)
                                     .foregroundColor(.gray)
-                                Text("리뷰 기록")
+                                Text(I18N.reviewHistory)
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundColor(.gray)
                                     .padding(4)
@@ -87,32 +84,30 @@ struct MyInfoView: View {
                                     baseViewModel.SignOut()
                                 }, label: {
                                     HStack {
-                                        
-                                        Text("Sign Out")
+                                        Text(I18N.signOut)
                                             .font(.system(size: 18, weight: .bold))
                                         
                                     }
                                 })
                             }
-                            
                             Spacer()
                         }
                     }
                 }
-                Spacer()
                 
+                Spacer()
             }
+            .padding(.top, 50)
             .navigationBarHidden(true)
-            .navigationTitle("")
+            .navigationBarBackButtonHidden(true)
+            .foregroundColor(.white)
         }
-        .foregroundColor(.white)
-        
     }
 }
 
 struct MyInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        MyInfoView()
-            .environmentObject(BaseViewModel())
+        Preview(source: MyInfoView().environmentObject(BaseViewModel()), dark: true)
+        
     }
 }

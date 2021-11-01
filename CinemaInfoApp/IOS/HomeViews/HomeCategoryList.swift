@@ -8,7 +8,19 @@ struct HomeCategoryList: View {
     var genore: GenoreType?
     var rated: AgeType?
     var size: Int?
-
+    
+    @Environment(\.scenePhase) var scenePhase
+    
+//    init(listName: String, title: String?, genore: GenoreType?, rated: AgeType?, size: Int?) {
+//        self.listName = listName
+//        self.title = title
+//        self.genore = genore
+//        self.rated = rated
+//        self.size = size
+//
+//        self.homeCategoryListViewModel.setting(title: title, genore: genore, rated: rated, size: size)
+//    }
+//
     
     var body: some View {
         VStack {
@@ -54,9 +66,18 @@ struct HomeCategoryList: View {
             }
         }
         .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.5)))
+        .onChange(of: scenePhase) { phase in
+            switch phase {
+                case .inactive :
+                print("inactive")
+                case .active :
+                self.homeCategoryListViewModel.fetchSearch()
+                case .background :
+                    print("background")
+            }
+        }
         .onAppear {
             self.homeCategoryListViewModel.setting(title: title, genore: genore, rated: rated, size: size)
-            homeCategoryListViewModel.fetchSearch()
         }
     }
 }

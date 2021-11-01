@@ -79,8 +79,8 @@ struct MovieDetailSwitcher: View {
                         }
                         else {
                             ForEach(movieDetailVM.reviews, id: \.self) { review in
-                                if let review = review {
-                                    if review.idx == review.idx {
+                                if let review = review, let myReview = myReview{
+                                    if myReview.idx == review.idx {
                                         ReviewView(review: review, movie: movie, myReview: true, allReviewViewModel: allReviewViewModel) {
                                             movieDetailVM.fetchMyReviews()
                                             movieDetailVM.fetchReviews(offset: 0, size: 4)

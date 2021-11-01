@@ -41,7 +41,13 @@ extension ReviewHistoryViewModel {
                 if let movies = result.movies, let reviews = result.reviews {
                     for (index) in 0..<movies.count {
                         self?.myReviews[movies[index]] = reviews.first(where: {$0.movie_id == movies[index].movieId})
+                        
                     }
+//                    if let myReviews = self?.myReviews {
+//                        self?.myReviews = self?.myReviews.sorted { $0.value.id > $1.value.id }
+//                        print("정렬")
+//                    }
+                    
                 }
                 
             })

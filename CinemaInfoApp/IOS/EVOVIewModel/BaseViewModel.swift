@@ -3,7 +3,6 @@ import Combine
 
 class BaseViewModel: ObservableObject {
     @Published var selected: Tab = .home
-    @Published var launchAfter = true // test
 
     @Published var isLogin = false{
         
@@ -15,56 +14,80 @@ class BaseViewModel: ObservableObject {
     }
     @Published var user: User?
     
-    @Published var autoLogin = false
+    @Published var autoLogin = false {
+        didSet {
+            UserDefaults.standard.set(autoLogin, forKey: "AutoLogin")
+            print(autoLogin)
+            
+        }
+    }
     
     let didChange = PassthroughSubject<BaseViewModel,Never>()
 
-    
-//    @Published var afterLaunch: Bool {
-//        get {
-//            return UserDefaults.standard.bool(forKey: "afterLaunch")
-//        }
-//        set {
-//            UserDefaults.standard.set(newValue, forKey: "afterLaunch")
-//        }
-//    }
+    //false = firstLaunch
+    @Published var afterLaunch: Bool
     
     init() {
-        launchAfter = UserDefaults.standard.bool(forKey: "LaunchAfter")
+        afterLaunch = UserDefaults.standard.bool(forKey: "LaunchAfter")
+        autoLogin = UserDefaults.standard.bool(forKey: "AutoLogin")
+        
+        if afterLaunch {
+            
+        }
+        
+        if autoLogin {
+            autoSignIn()
 
-        print(launchAfter)
+        }
     }
 }
 
 //test
 extension BaseViewModel {
     
-    func TestSignIn() {
-        MovieDB.SignIn(id: "test", pwd: "1234")
-            .mapError({ (error) -> Error in
-                print("SignIn error \(error)")
-                return error
-            })
-            .sink(receiveCompletion: {
-                print("SignIn Result: \($0)")
-            }, receiveValue: {
-                print("SignIn Value: \($0)")
-            })
+    func autoSignIn() {
+        if let user = readLoginData() {
+            print(user)
+            if let id = user.id, let pwd = user.pwd {
+                print("id: \(id)")
+                print("pwd: \(pwd)")
+                MovieDB.SignIn(id: id, pwd: pwd)
+                    .mapError({ (error) -> Error in
+                        return error
+                    })
+                    .sink(receiveCompletion: { [weak self] result in
+                        switch result {
+                        case .finished :
+                            self?.isLogin = true
+                            print("Auto SignIn Finished")
+                        case .failure(let error) :
+                            print("Auto SignIn error \(error)")
+                        }
+                    }, receiveValue: {
+                        print("Auto SignIn Value: \($0)")
+                    })
+            }
+            
+        }
+        
     }
-    
 }
 
 extension BaseViewModel {
     func getUser() {
         MovieDB.loginCheck()
             .mapError({ (error) -> Error in
-                print("LoginCheck error: \(error)")
+                
                 return error
             })
             .sink(receiveCompletion: { result in
-                
+                switch result {
+                case .finished :
+                    print("LoginCheck Finished")
+                case .failure(let error) :
+                    print("LoginCheck Error : \(error)")
+                }
             }, receiveValue: { [weak self] value in
-                
                 self?.user = value.result
             })
     }
@@ -72,16 +95,30 @@ extension BaseViewModel {
     func SignOut() {
         MovieDB.SignOut()
             .mapError({ (error) -> Error in
-                print("signOut error: \(error)")
                 return error
             })
             .sink(receiveCompletion: { [weak self] result in
-                self?.isLogin = false
-                print("signOut result: \(result)")
+                switch result {
+                case .finished :
+                    self?.isLogin = false
+                    self?.autoLogin = false
+                    deleteLoginDate()
+                    print("SignOut Finished")
+                case .failure(let error) :
+                    print("SignOut Error: \(error)")
+                }
             }, receiveValue: {
-                print("signOut value: \($0)")
+                print("SignOut value: \($0)")
             })
     }
+}
+
+func readLoginData() -> SignUser?{
+    KeyChainHelper.standard.read(service: loginService, account: loginAccount, type: SignUser.self)
+}
+
+func deleteLoginDate() {
+    KeyChainHelper.standard.delete(service: loginService, account: loginAccount)
 }
 
 enum Tab: String {

@@ -15,14 +15,14 @@ struct SearchResultGrid: View {
         if searchViewModel.searchString.isEmpty {
             VStack() {
                 Spacer()
-                Text("이곳에 검색한 영화가 나옵니다.")
+                Text(I18N.searchReady)
                 Spacer()
             }
         }
         else if searchViewModel.searchResultMovies.isEmpty {
             VStack() {
                 Spacer()
-                Text("검색한 영화가 없습니다.")
+                Text(I18N.searchNone)
                 Spacer()
             }
         }
@@ -36,8 +36,6 @@ struct SearchResultGrid: View {
                         StandardHomeMovie(posterImgURL: movie.posterImgURL)
                             .frame(height: UIScreen.screenWidth / 3 / 2 * 3 - 10)
                     }
-                    .navigationTitle("")
-                    
                 }
             }
             .padding(.bottom, UIScreen.tabbarHeight)
@@ -48,12 +46,6 @@ struct SearchResultGrid: View {
 
 struct SearchResultGrid_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
-            .environmentObject(BaseViewModel())
-            .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
-        
-        SearchView()
-            .environmentObject(BaseViewModel())
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
+        Preview(source: SearchView(), dark: true)
     }
 }

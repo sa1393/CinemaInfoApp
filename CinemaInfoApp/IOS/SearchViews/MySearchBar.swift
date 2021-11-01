@@ -11,7 +11,7 @@ struct MySearchBar: View {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(Color(hex: "#818181"))
 
-                TextField("Search", text: $text)
+                TextField(I18N.searchHint, text: $text)
                     .foregroundColor(Color.white)
 
                 if !text.isEmpty {

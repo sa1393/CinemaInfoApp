@@ -21,9 +21,11 @@ struct StandardHomeMovie: View {
                                 .aspectRatio(0.7, contentMode: .fill)
                         
                         }
+                        .fade(duration: 1)
                         .scaledToFit()
                         .clipped()
                         .cornerRadius(8)
+                        
                 }
                 else {
                     VStack(alignment: .center) {

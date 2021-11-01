@@ -42,7 +42,7 @@ extension MovieDB {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let user = LoginUser(id: id, pwd: pwd)
+        let user = SignUser(id: id, pwd: pwd)
         
         guard let httpBody = try? JSONEncoder().encode(user) else {
             fatalError("no url")
@@ -238,6 +238,8 @@ extension MovieDB {
             body.append("Content-Type: \(imageData.mimeType)\r\n\r\n".data(using: .utf8)!)
             body.append(imageData.data)
             body.append("\r\n".data(using: .utf8)!)
+            
+            print(imageData.data)
         }
         
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)

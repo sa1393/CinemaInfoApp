@@ -4,19 +4,17 @@ import UIKit
 
 struct ContentView: View{
     @EnvironmentObject var baseViewModel: BaseViewModel
-    @State var uiTabarController: UITabBarController?
-    @Namespace var animation
-
+    
     var body: some View {
-        ZStack {
-            Color.black
-                .edgesIgnoringSafeArea(.bottom)
-            GeometryReader { proxy in
-                if !baseViewModel.launchAfter {
+        GeometryReader { proxy in
+            VStack {
+                Spacer()
+                if !baseViewModel.afterLaunch {
                     TutorialView()
                 }
                 else {
                     NavigationView {
+                        
                         TabView(selection: $baseViewModel.selected) {
                             HomeView()
                                 .tag(Tab.home)
@@ -31,17 +29,24 @@ struct ContentView: View{
                                 TabButton(tab: .search, systemIcon: "magnifyingglass")
                                 TabButton(tab: .my, systemIcon: "person.fill")
                             }
-                            .frame(height: proxy.size.height / 10)
-                            .background(
-                                Color.black.opacity(0.9)
-                                    .ignoresSafeArea(.container, edges: .bottom)
-                            )
+                                .ignoresSafeArea(.keyboard, edges: .bottom)
+                                .frame(height: UIScreen.tabbarHeight)
+                                .background(
+                                    Color.black.opacity(0.9)
+                                        .ignoresSafeArea(.container, edges: .bottom)
+                                )
                             , alignment: .bottom
                         )
+                        .ignoresSafeArea(.keyboard, edges: .bottom)
+                        
                     }
+                    .navigationBarHidden(true)
                     .navigationViewStyle(.stack)
+                    
                 }
+                Spacer()
             }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .preferredColorScheme(.dark)
     }
@@ -51,9 +56,7 @@ extension ContentView {
     @ViewBuilder
     func TabButton(tab: Tab, systemIcon: String) -> some View{
         Button(action: {
-            withAnimation{
-                baseViewModel.selected = tab
-            }
+            baseViewModel.selected = tab
         }) {
             
             VStack(spacing: 0) {
@@ -63,11 +66,10 @@ extension ContentView {
                         .frame(height: 2)
                         .padding(.horizontal, 2)
                     
-                    if baseViewModel.selected == tab {
+                    if  baseViewModel.selected == tab {
                         Rectangle()
                             .fill(Color.white)
                             .frame(height: 2)
-                            .matchedGeometryEffect(id: "Tab", in: animation)
                             .padding(.horizontal, 2)
                             .offset(y: 4)
                     }
@@ -98,16 +100,8 @@ extension ContentView {
 struct ContentView_Previews: PreviewProvider {
     
     static var previews: some View {
-        ContentView()
+        Preview(source: ContentView(), dark: true)
             .environmentObject(BaseViewModel())
-        
-        ContentView()
-            .environmentObject(BaseViewModel())
-            .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
-        
-        ContentView()
-            .environmentObject(BaseViewModel())
-            .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
         
     }
 }

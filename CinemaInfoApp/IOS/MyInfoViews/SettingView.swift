@@ -19,7 +19,7 @@ struct SettingView: View {
                             .foregroundColor(.white)
                     })
                     
-                    Text("설정")
+                    Text(I18N.setting)
                         .foregroundColor(Color.white)
                         .font(.system(size: 26, weight: .bold))
                     

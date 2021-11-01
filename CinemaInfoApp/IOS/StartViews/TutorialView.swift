@@ -22,12 +22,12 @@ struct TutorialView: View {
                                 Spacer()
                                 HStack {
                                     VStack(alignment: .leading) {
-                                        Text("영화 정보")
+                                        Text(I18N.movieInfo)
                                             .font(.system(size: 36, weight: .bold))
                                             .foregroundColor(Color.white)
                                             .padding(.vertical, 12)
                                         
-                                        Text("보고싶은 영화들의 정보를\n확인하세요.")
+                                        Text(I18N.tutorialMovieInfoContent)
                                             .font(.system(size: 18, weight: .bold))
                                             .foregroundColor(Color.white.opacity(0.8))
                                     }
@@ -52,12 +52,12 @@ struct TutorialView: View {
                                 Spacer()
                                 HStack {
                                     VStack(alignment: .leading) {
-                                        Text("리뷰 쓰기")
+                                        Text(I18N.reviewWirte)
                                             .font(.system(size: 36, weight: .bold))
                                             .foregroundColor(Color.black)
                                             .padding(.vertical, 12)
                                         
-                                        Text("리뷰를 써서 영화의 대한\n생각을 공유하세요.")
+                                        Text(I18N.tutorialReviewContent)
                                             .font(.system(size: 18, weight: .bold))
                                             .foregroundColor(Color.black.opacity(0.8))
                                     }
@@ -79,12 +79,12 @@ struct TutorialView: View {
                     Spacer()
                     VStack {
                         Button(action: {
-                            baseViewModel.launchAfter = true
-                            UserDefaults.standard.set(baseViewModel.launchAfter, forKey: "LaunchAfter")
+                            baseViewModel.afterLaunch = true
+                            UserDefaults.standard.set(baseViewModel.afterLaunch, forKey: "LaunchAfter")
                         }, label: {
                             HStack {
                                 Spacer()
-                                Text(baseViewModel.isLogin ? "시작하기" : "로그인 없이 시작하기")
+                                Text(baseViewModel.isLogin ? I18N.signin : I18N.noLoginStart)
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundColor(Color.white)
                                 Spacer()
@@ -113,7 +113,7 @@ struct TutorialView: View {
                                 SignInView()
 
                             }, label: {
-                                Text("로그인")
+                                Text(I18N.signin)
                                     .foregroundColor(Color.white)
                                     .font(.system(size: 20, weight: .bold))
                             })

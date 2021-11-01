@@ -51,7 +51,6 @@ struct SignTextField: View {
                     .foregroundColor(.red)
                     .font(.system(size: 18, weight: .bold))
             }
-            
         }
         
     }

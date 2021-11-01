@@ -115,7 +115,7 @@ extension MovieDetail {
                 
             }
             else {
-                Text("이미지 없음")
+                Text(I18N.noImage)
             }
             
             Spacer()
@@ -189,7 +189,7 @@ extension MovieDetail {
                                     ReviewWrite(movie: movie)
                                 }, label: {
                                     Image(systemName: "pencil")
-                                    Text("리뷰 쓰기")
+                                    Text(I18N.reviewWirte)
                                         .font(.system(size: 18, weight: .semibold))
                                 })
                             }
@@ -201,7 +201,7 @@ extension MovieDetail {
                                     SignInView()
                                 }, label: {
                                     Image(systemName: "pencil")
-                                    Text("리뷰 쓰기")
+                                    Text(I18N.reviewWirte)
                                         .font(.system(size: 18, weight: .bold))
                                 })
         

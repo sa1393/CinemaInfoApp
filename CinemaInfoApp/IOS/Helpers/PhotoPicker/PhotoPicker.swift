@@ -4,6 +4,7 @@ import SwiftUI
 
 struct PhotoPicker: UIViewControllerRepresentable {
     typealias UIViewControllerType = PHPickerViewController
+    @Environment(\.presentationMode) var presentationMode
     
     @ObservedObject var mediaItems: PickedMediaItems
     var didFinishPicking: (_ didSelectItems: Bool) -> Void
@@ -46,6 +47,8 @@ struct PhotoPicker: UIViewControllerRepresentable {
             
             let itemProvider = results[0].itemProvider
             self.getPhoto(from: itemProvider)
+        
+            photoPicker.presentationMode.wrappedValue.dismiss()
         }
         private func getPhoto(from itemProvider: NSItemProvider) {
             if itemProvider.canLoadObject(ofClass: UIImage.self) {

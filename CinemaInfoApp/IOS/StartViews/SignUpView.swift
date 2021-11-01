@@ -25,7 +25,7 @@ struct SignUpView: View {
                             .foregroundColor(.white)
                     })
                     
-                    Text("회원 가입")
+                    Text(I18N.signup)
                         .foregroundColor(Color.white)
                         .font(.system(size: 26, weight: .bold))
                     
@@ -65,7 +65,7 @@ struct SignUpView: View {
                                         .clipShape(Circle())
                                         .overlay(Circle().stroke(Color.white, lineWidth: 2))
                                 }
-                                Text("이미지 고르기")
+                                Text(I18N.pickProfile)
                                     .font(.system(size: 18, weight: .bold))
                                     .foregroundColor(.white)
                                 
@@ -76,16 +76,16 @@ struct SignUpView: View {
                         
                     }
                     
-                    SignTextField(placeHolder: "아이디", secure: false, signField: $signUpViewModel.id)
-                    SignTextField(placeHolder: "이름", secure: true, signField: $signUpViewModel.name)
-                    SignTextField(placeHolder: "비밀번호", secure: true, signField: $signUpViewModel.pwd)
+                    SignTextField(placeHolder: I18N.id, secure: false, signField: $signUpViewModel.id)
+                    SignTextField(placeHolder: I18N.name, secure: true, signField: $signUpViewModel.name)
+                    SignTextField(placeHolder: I18N.pwd, secure: true, signField: $signUpViewModel.pwd)
                     
                     Button(action: {
                         signUpViewModel.SignUp(profile: mediaItems.item?.photo ?? UIImage(systemName: "person.fill"))
                     }, label: {
                         HStack{
                             Spacer()
-                            Text("가입하기")
+                            Text(I18N.join)
                                 .foregroundColor(Color.white)
                                 .font(.system(size: 18, weight: .bold))
                             Spacer()
@@ -120,7 +120,7 @@ struct SignUpView: View {
         }
         .navigationBarHidden(true)
         .alert(isPresented: $signUpViewModel.showingFailAlert) {
-            Alert(title: Text("로그인"), message: Text("회원가입에 실패했습니다."), dismissButton: .default(Text("Dismiss").foregroundColor(Color.red)))
+            Alert(title: Text(I18N.signup), message: Text(I18N.signupFail), dismissButton: .default(Text(I18N.close).foregroundColor(Color.red)))
         }
         .onAppear {
             self.signUpViewModel.cancellable = self.signUpViewModel
@@ -129,6 +129,7 @@ struct SignUpView: View {
                    guard offSign else { return }
                    
                    DispatchQueue.main.async {
+                       print("phpPciker 닫기 \(self)")
                        self.presentationMode.wrappedValue.dismiss()
                    }
                }
@@ -137,10 +138,12 @@ struct SignUpView: View {
         .sheet(isPresented: $showPickerSheet) {
             PhotoPicker(mediaItems: mediaItems) { didSelectionItem in
                 
+                
+                    
                 showPickerSheet = false
+                
             }
         }
-        
     }
 }
 

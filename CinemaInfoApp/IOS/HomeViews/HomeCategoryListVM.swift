@@ -1,17 +1,21 @@
 
 import Foundation
+import Combine
 
 class HomeCategoryListViewModel: ObservableObject {
     @Published var movies: [MovieProtocol] = []
     @Published var loading: Bool = false
+    
+    @Published var enteredForeground = true
     
     var title: String?
     var genore: GenoreType?
     var rated: AgeType?
     var size: Int?
     
+    let willChange = PassthroughSubject<Bool, Never>()
+    
     init() {
-        
     }
     
     func setting(title: String? = nil, genore: GenoreType? = nil, rated: AgeType? = nil, size: Int? = nil) {
@@ -19,6 +23,10 @@ class HomeCategoryListViewModel: ObservableObject {
         self.genore = genore
         self.rated = rated
         self.size = size
+    }
+    
+    func fetch() {
+        fetchSearch()
     }
     
     func resultOption() -> String {
@@ -39,10 +47,14 @@ class HomeCategoryListViewModel: ObservableObject {
             resultStr.append(contentsOf: "&offset=0&size=\(String(size))")
         }
         
-        let start = resultStr.index(resultStr.startIndex, offsetBy: 1)
-        let end = resultStr.index(resultStr.endIndex, offsetBy: -1)
+        if !resultStr.isEmpty {
+            let start = resultStr.index(resultStr.startIndex, offsetBy: 1)
+            let end = resultStr.index(resultStr.endIndex, offsetBy: -1)
+            
+            resultStr = String(resultStr[start...end])
+        }
         
-        resultStr = String(resultStr[start...end])
+        
         return resultStr
     }
 }
@@ -73,4 +85,5 @@ extension HomeCategoryListViewModel {
                 
             })
     }
+
 }

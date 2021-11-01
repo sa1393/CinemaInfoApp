@@ -1,12 +1,16 @@
 import Foundation
 import Combine
 
+let loginService = "LoginData"
+let loginAccount = "User"
+
 class SigninViewModel: ObservableObject {
     @Published var id: SignField = SignField(text: "", isError: false, errorMsg: "")
     @Published var pwd: SignField = SignField(text: "", isError: false, errorMsg: "")
     
     @Published var loading: Bool = false
     @Published var showingFailAlert: Bool = false
+    @Published var autoLogin: Bool = false
     var baseViewModel: BaseViewModel?
     
     @Published var offSign = false
@@ -58,6 +62,7 @@ extension SigninViewModel {
                 switch result {
                 case .finished :
                     print("CheckLogin Finished")
+                    
                 case .failure(let error) :
                     print("CheckLogin Error \(error)")
                 }
@@ -82,27 +87,44 @@ extension SigninViewModel {
             })
             .sink(receiveCompletion: { [weak self] result in
                 switch result {
-                case .finished:
+                case .finished :
                     print("SignIn Finished")
-                    
+
                     DispatchQueue.main.async {
                         self?.offSignView()
                         self?.baseViewModel?.isLogin = true
+                        if let autoLogin = self?.autoLogin {
+                            if autoLogin {
+                                self?.baseViewModel?.autoLogin = true
+                            }
+                        }
                     }
-                    
+
+                    if let autoLogin = self?.autoLogin {
+                        if autoLogin {
+                            if KeyChainHelper.standard.read(service: loginService, account: loginAccount) != nil {
+                                KeyChainHelper.standard.update(item: SignUser(id: self?.id.text, pwd: self?.pwd.text), service: loginService, account: loginAccount)
+                            }
+                            else {
+                                KeyChainHelper.standard.save(item: SignUser(id: self?.id.text, pwd: self?.pwd.text), service: loginService, account: loginAccount)
+                            }
+                        }
+                    }
+
                     break
                 case .failure(let error):
                     self?.showingFailAlert = true
-                    
+
                     print("SignIn error: \(error)")
                 }
-                
+
                 DispatchQueue.main.async {
                     self?.loading = false
                 }
-                
+
             }, receiveValue: { value in
                 print("SignIn Value: \(value)")
             })
     }
+
 }
