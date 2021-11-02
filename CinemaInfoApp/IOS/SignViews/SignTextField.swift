@@ -10,9 +10,7 @@ struct SignTextField: View {
 
     var body: some View {
         VStack {
-            
             HStack {
-                
                 TextField("", text: $signField.text) { (status) in
                     if status {
                         withAnimation(.easeInOut.speed(1.5)) {

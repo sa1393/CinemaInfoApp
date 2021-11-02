@@ -6,47 +6,37 @@ struct ContentView: View{
     @EnvironmentObject var baseViewModel: BaseViewModel
     
     var body: some View {
-        GeometryReader { proxy in
-            VStack {
-                Spacer()
-                if !baseViewModel.afterLaunch {
-                    TutorialView()
-                }
-                else {
-                    NavigationView {
-                        
-                        TabView(selection: $baseViewModel.selected) {
-                            HomeView()
-                                .tag(Tab.home)
-                            SearchView()
-                                .tag(Tab.search)
-                            MyInfoView()
-                                .tag(Tab.my)
-                        }
-                        .overlay(
-                            HStack {
-                                TabButton(tab: .home, systemIcon: "house.fill")
-                                TabButton(tab: .search, systemIcon: "magnifyingglass")
-                                TabButton(tab: .my, systemIcon: "person.fill")
-                            }
-                                .ignoresSafeArea(.keyboard, edges: .bottom)
-                                .frame(height: UIScreen.tabbarHeight)
-                                .background(
-                                    Color.black.opacity(0.9)
-                                        .ignoresSafeArea(.container, edges: .bottom)
-                                )
-                            , alignment: .bottom
-                        )
-                        .ignoresSafeArea(.keyboard, edges: .bottom)
-                        
-                    }
-                    .navigationBarHidden(true)
-                    .navigationViewStyle(.stack)
-                    
-                }
-                Spacer()
+        VStack {
+            if !baseViewModel.afterLaunch {
+                TutorialView()
             }
-            .ignoresSafeArea(.keyboard, edges: .bottom)
+            else {
+                NavigationView {
+                    TabView(selection: $baseViewModel.selected) {
+                        HomeView()
+                            .tag(Tab.home)
+                        SearchView()
+                            .tag(Tab.search)
+                        MyInfoView()
+                            .tag(Tab.my)
+                    }
+                    .overlay(
+                        HStack {
+                            TabButton(tab: .home, systemIcon: "house.fill")
+                            TabButton(tab: .search, systemIcon: "magnifyingglass")
+                            TabButton(tab: .my, systemIcon: "person.fill")
+                        }
+                        .frame(height: UIScreen.tabbarHeight)
+                        .background(
+                            Color.black.opacity(0.9)
+                                .ignoresSafeArea(.container, edges: .bottom)
+                        )
+                        , alignment: .bottom
+                    )
+                }
+                .navigationViewStyle(.stack)
+                .navigationBarHidden(true)
+            }
         }
         .preferredColorScheme(.dark)
     }

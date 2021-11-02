@@ -3,7 +3,12 @@
 "setting" = "설정";
 "info" = "Info";
 
+//review
+"review" = "리뷰";
 "review_history" = "리뷰 기록";
+"review_all" = "모든 리뷰";
+"review_edit" = "리뷰 수정";
+"review_write_content" = "리뷰는 공개되며 내 계정의 정보가\n일부 포함됩니다.";
 
 //Search
 "search_result" = "검색 결과";
@@ -11,12 +16,14 @@
 "search_none" = "검색한 영화가 없습니다.";
 "search_hint" = "검색";
 
-
 //Sign
 "signup" = "회원가입";
 "signin" = "로그인";
 "join" = "가입하기";
 "sign_out" = "로그아웃";
+"user_info" = "회원정보";
+"user_edit" = "회원정보 수정";
+"eidt" = "수정";
 
 "id" = "아이디";
 "pwd" = "비밀번호";
@@ -24,6 +31,10 @@
 "profile" = "프로필";
 "auto_login" = "자동 로그인";
 "pick_profile" = "프로필 고르기";
+
+"check" = "확인";
+"password_check" = "비밀번호 확인";
+"password_check_fail" = "비밀번호가 다릅니다";
 
 //Tutorial
 

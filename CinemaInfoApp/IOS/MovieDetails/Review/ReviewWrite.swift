@@ -29,7 +29,7 @@ struct ReviewWrite: View {
                             .frame(width: 20, height: 20)
                     })
                     
-                    Text("리뷰")
+                    Text(I18N.reviewWirte)
                         .font(.system(size: 26, weight: .bold))
                         .foregroundColor(.white)
                     
@@ -46,7 +46,7 @@ struct ReviewWrite: View {
                             .font(.system(size: 14))
                         
 
-                        Text("리뷰는 공개되며 내 계정의 정보가\n일부 포함됩니다.")
+                        Text("")
                             .lineSpacing(1)
                             .font(.system(size: 14))
                             
@@ -59,7 +59,6 @@ struct ReviewWrite: View {
 
                                 if index % 2 == 1{
                                     Button(action: {
-                                        print("왼쪽 별")
                                         ratingNum = index
                                     }, label: {
                                         Image(systemName: "star.leadinghalf.filled")
@@ -74,7 +73,6 @@ struct ReviewWrite: View {
                                 }
                                 else if index % 2 == 0{
                                     Button(action: {
-                                        print("오른쪽 별")
                                         ratingNum = index
                                     }, label: {
                                         Image(systemName: "star.leadinghalf.filled")
@@ -110,7 +108,7 @@ struct ReviewWrite: View {
                                     Image(systemName: "pencil")
                                         .foregroundColor(.black)
                                         .font(.system(size: 18, weight: .bold))
-                                    Text("리뷰 작성")
+                                    Text(I18N.reviewWirte)
                                         .foregroundColor(.black)
                                 }
                             }

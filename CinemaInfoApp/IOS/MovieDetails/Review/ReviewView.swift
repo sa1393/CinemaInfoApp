@@ -112,7 +112,7 @@ struct ReviewView: View {
                             NavigationLink(destination: {
                                 NavigationLazyView(ReviewEditView(movie: movie, review: review))
                             }, label: {
-                                Text("리뷰 수정")
+                                Text(I18N.review)
                                     .foregroundColor(.black)
                                     .padding(8)
                             })

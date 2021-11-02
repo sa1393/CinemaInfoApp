@@ -4,8 +4,7 @@ import SwiftUI
 class MovieDetailVM: ObservableObject {
     @Published var reviews: [Review] = []
     @Published var loading: Bool = false
-    
-    
+
     @Published var myReviewLoading: Bool = false
     
     @Published var myReview: Review?

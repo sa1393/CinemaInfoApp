@@ -24,7 +24,7 @@ struct AllReviewView: View {
                         
                     })
                     
-                    Text("모든 리뷰")
+                    Text(I18N.reviewAll)
                         .font(.system(size: 26, weight: .bold))
                         .foregroundColor(.white)
                 
@@ -40,7 +40,6 @@ struct AllReviewView: View {
                                 print(index)
                                 print(allReviewViewModel.page)
                                 if allReviewViewModel.reviews.firstIndex(where: {$0.idx == review.idx}) == allReviewViewModel.page - 1 && !allReviewViewModel.last {
-                                    print("last index")
                                     allReviewViewModel.loadMoreComment(movieId: movieDetailVM.movie.movie.movieId)
                                 }
                             }

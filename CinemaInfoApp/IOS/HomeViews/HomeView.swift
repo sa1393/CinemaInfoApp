@@ -8,7 +8,7 @@ struct HomeView: View {
     var body: some View {
         VStack {
             ScrollView(.vertical, showsIndicators: false){
-                VStack {
+                LazyVStack {
                     ZStack {
                         VStack(alignment: .leading) {
                             if homeVM.rankLoading {
@@ -55,7 +55,6 @@ struct HomeView: View {
                         HomeCategoryList(listName: key, title: homeVM.categoryMovies[key]?.title, genore: homeVM.categoryMovies[key]?.genore, rated: homeVM.categoryMovies[key]?.rated, size: homeVM.categoryMovies[key]?.size)
                     }
                     .padding(.horizontal, 6)
-                    
                 }
                 .padding(.bottom, UIScreen.tabbarHeight)
             }
@@ -66,9 +65,10 @@ struct HomeView: View {
         .onChange(of: scenePhase) { phase in
             switch phase {
             case .active :
+                
                 homeVM.fetchRankMovies(size: 5)
             case .inactive :
-                print("inactive")
+                print("active")
             case .background :
                 print("background")
             }

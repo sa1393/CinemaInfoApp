@@ -55,10 +55,17 @@ extension HomeVM {
                 }
                 
                 self?.rankLoading = false
-                
             }, receiveValue: { [weak self] value in
                 if let movies = value.movies {
                     self?.rankMovies = movies
+//                    if movies.count > 5 {
+//                        self?.rankMovies = movies[0...5]
+//                    }
+//                    else {
+//                        self?.rankMovies = movies
+//                    }
+//
+                    
                 }
                 
             })

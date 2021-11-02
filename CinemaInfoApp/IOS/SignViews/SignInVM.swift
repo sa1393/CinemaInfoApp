@@ -99,16 +99,12 @@ extension SigninViewModel {
                             }
                         }
                     }
-
-                    if let autoLogin = self?.autoLogin {
-                        if autoLogin {
-                            if KeyChainHelper.standard.read(service: loginService, account: loginAccount) != nil {
-                                KeyChainHelper.standard.update(item: SignUser(id: self?.id.text, pwd: self?.pwd.text), service: loginService, account: loginAccount)
-                            }
-                            else {
-                                KeyChainHelper.standard.save(item: SignUser(id: self?.id.text, pwd: self?.pwd.text), service: loginService, account: loginAccount)
-                            }
-                        }
+                    
+                    if KeyChainHelper.standard.read(service: loginService, account: loginAccount) != nil {
+                        KeyChainHelper.standard.update(item: SignUser(id: self?.id.text, pwd: self?.pwd.text), service: loginService, account: loginAccount)
+                    }
+                    else {
+                        KeyChainHelper.standard.save(item: SignUser(id: self?.id.text, pwd: self?.pwd.text), service: loginService, account: loginAccount)
                     }
 
                     break

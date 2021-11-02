@@ -4,7 +4,6 @@ struct SearchView: View {
     @StateObject var searchVM = SearchVM()
 
     var body: some View {
-        
         VStack {
             VStack {
                 HStack {

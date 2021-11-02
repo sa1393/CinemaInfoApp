@@ -21,7 +21,7 @@ struct StandardHomeMovie: View {
                                 .aspectRatio(0.7, contentMode: .fill)
                         
                         }
-                        .fade(duration: 1)
+                        .fade(duration: 0.6)
                         .scaledToFit()
                         .clipped()
                         .cornerRadius(8)

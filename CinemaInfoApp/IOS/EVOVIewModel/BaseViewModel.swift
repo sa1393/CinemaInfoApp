@@ -5,7 +5,6 @@ class BaseViewModel: ObservableObject {
     @Published var selected: Tab = .home
 
     @Published var isLogin = false{
-        
         didSet {
             if isLogin {
                 getUser()
@@ -102,7 +101,8 @@ extension BaseViewModel {
                 case .finished :
                     self?.isLogin = false
                     self?.autoLogin = false
-                    deleteLoginDate()
+                    self?.user = nil
+//                    deleteLoginDate()
                     print("SignOut Finished")
                 case .failure(let error) :
                     print("SignOut Error: \(error)")

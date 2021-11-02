@@ -12,14 +12,7 @@ struct I18N {
     static let searchResult = "search_result".localized(comment: "검색 결과")
     static let searchReady = "search_ready".localized(comment: "")
     static let searchNone = "search_none".localized(comment: "")
-    static let signup = "signup".localized(comment: "")
-    static let signin = "signin".localized(comment: "")
-    static let id = "id".localized(comment: "")
-    static let pwd = "pwd".localized(comment: "")
-    static let name = "name".localized(comment: "")
-    static let profile = "profile".localized(comment: "")
-    static let autoLogin = "auto_login".localized(comment: "")
-    static let pickProfile = "pick_profile".localized(comment: "")
+    
     static let tutorialMovieInfoContent = "tutorial_movieInfo_content".localized(comment: "")
     static let tutorialReviewContent = "tutorial_review_content".localized(comment: "")
     static let noLoginStart = "noLoginStart".localized(comment: "")
@@ -32,6 +25,29 @@ struct I18N {
     static let join = "join".localized(comment: "")
     static let info = "info".localized(comment: "")
     static let searchHint = "search_hint".localized(comment: "")
-    static let reviewHistory = "review_history".localized(comment: "")
+    
     static let signOut = "sign_out".localized(comment: "")
+    static let userEdit = "user_edit".localized(comment: "")
+    static let edit = "edit".localized(comment: "")
+    static let userInfo = "user_info".localized(comment: "")
+    static let check = "check".localized(comment: "")
+    
+    //review
+    static let review = "review".localized(comment: "")
+    static let reviewAll = "review_all".localized(comment: "")
+    static let reviewEdit = "review_edit".localized(comment: "")
+    static let reviewWriteContent = "review_write_content".localized(comment: "")
+    static let reviewHistory = "review_history".localized(comment: "")
+    
+    //sign
+    static let passwordCheck = "password_check".localized(comment: "")
+    static let passwordCheckFail = "password_check_fail".localized(comment: "")
+    static let signup = "signup".localized(comment: "")
+    static let signin = "signin".localized(comment: "")
+    static let id = "id".localized(comment: "")
+    static let pwd = "pwd".localized(comment: "")
+    static let name = "name".localized(comment: "")
+    static let profile = "profile".localized(comment: "")
+    static let autoLogin = "auto_login".localized(comment: "")
+    static let pickProfile = "pick_profile".localized(comment: "")
 }

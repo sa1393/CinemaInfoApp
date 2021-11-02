@@ -54,6 +54,9 @@
 		A4303E1C272E5E9D001054FC /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4303E1B272E5E9D001054FC /* Preview.swift */; };
 		A4303E23272EB87D001054FC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A4303E25272EB87D001054FC /* Localizable.strings */; };
 		A4303E29272EC0B5001054FC /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4303E28272EC0B5001054FC /* Localized.swift */; };
+		A44C5B6A2730DA20009C4B08 /* UserEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44C5B692730DA20009C4B08 /* UserEditView.swift */; };
+		A44C5B6C2730DA6A009C4B08 /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44C5B6B2730DA6A009C4B08 /* CustomNavigationBar.swift */; };
+		A44C5B8F27310879009C4B08 /* UserEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44C5B8E27310879009C4B08 /* UserEditViewModel.swift */; };
 		A48B8F362725592A0067C43C /* SignUpVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48B8F352725592A0067C43C /* SignUpVM.swift */; };
 		A48B8F382725AB0E0067C43C /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48B8F372725AB0E0067C43C /* SettingView.swift */; };
 		A48B8F3A2725AB2F0067C43C /* ReviewHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48B8F392725AB2F0067C43C /* ReviewHistoryView.swift */; };
@@ -117,6 +120,9 @@
 		A4303E28272EC0B5001054FC /* Localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
 		A4303E2A272EC204001054FC /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		A4303E2B272EC83B001054FC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A44C5B692730DA20009C4B08 /* UserEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEditView.swift; sourceTree = "<group>"; };
+		A44C5B6B2730DA6A009C4B08 /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
+		A44C5B8E27310879009C4B08 /* UserEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEditViewModel.swift; sourceTree = "<group>"; };
 		A48B8F352725592A0067C43C /* SignUpVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVM.swift; sourceTree = "<group>"; };
 		A48B8F372725AB0E0067C43C /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		A48B8F392725AB2F0067C43C /* ReviewHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewHistoryView.swift; sourceTree = "<group>"; };
@@ -143,17 +149,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		633E5B332715DC89003A74B7 /* StartViews */ = {
+		633E5B332715DC89003A74B7 /* StartView */ = {
 			isa = PBXGroup;
 			children = (
 				633E5B3427166C62003A74B7 /* TutorialView.swift */,
-				633E5B362716743C003A74B7 /* SignInView.swift */,
-				633E5B3827167840003A74B7 /* SignInVM.swift */,
-				631AF99727194677004499EA /* SignUpView.swift */,
-				A48B8F352725592A0067C43C /* SignUpVM.swift */,
-				634CCC9B270EDAE200AA180E /* SignTextField.swift */,
 			);
-			path = StartViews;
+			path = StartView;
 			sourceTree = "<group>";
 		};
 		639228A92717E37F0073D1BA /* Review */ = {
@@ -208,7 +209,8 @@
 		639E932426FD599C0084EB47 /* IOS */ = {
 			isa = PBXGroup;
 			children = (
-				633E5B332715DC89003A74B7 /* StartViews */,
+				A44C5B6D2730DBD9009C4B08 /* SignViews */,
+				633E5B332715DC89003A74B7 /* StartView */,
 				63FD8BA8271005BE00D3EA7B /* EVOVIewModel */,
 				639E932F26FD599C0084EB47 /* HomeViews */,
 				639E932926FD599C0084EB47 /* SearchViews */,
@@ -256,6 +258,7 @@
 		639E933C26FD599C0084EB47 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				A44C5B6B2730DA6A009C4B08 /* CustomNavigationBar.swift */,
 				639E933E26FD599C0084EB47 /* TabBarIcon.swift */,
 				639E934026FD599C0084EB47 /* StandardHomeMovie.swift */,
 				A4303E1B272E5E9D001054FC /* Preview.swift */,
@@ -340,6 +343,20 @@
 				A4303E28272EC0B5001054FC /* Localized.swift */,
 			);
 			path = String;
+			sourceTree = "<group>";
+		};
+		A44C5B6D2730DBD9009C4B08 /* SignViews */ = {
+			isa = PBXGroup;
+			children = (
+				633E5B362716743C003A74B7 /* SignInView.swift */,
+				633E5B3827167840003A74B7 /* SignInVM.swift */,
+				631AF99727194677004499EA /* SignUpView.swift */,
+				A48B8F352725592A0067C43C /* SignUpVM.swift */,
+				634CCC9B270EDAE200AA180E /* SignTextField.swift */,
+				A44C5B692730DA20009C4B08 /* UserEditView.swift */,
+				A44C5B8E27310879009C4B08 /* UserEditViewModel.swift */,
+			);
+			path = SignViews;
 			sourceTree = "<group>";
 		};
 		A4CD46C427299E3B00EAACD2 /* PhotoPicker */ = {
@@ -451,6 +468,7 @@
 				639E937126FD599C0084EB47 /* StandardHomeMovie.swift in Sources */,
 				A4CD46C82729B94800EAACD2 /* ReviewEditView.swift in Sources */,
 				639E936426FD599C0084EB47 /* SearchVM.swift in Sources */,
+				A44C5B6C2730DA6A009C4B08 /* CustomNavigationBar.swift in Sources */,
 				63A0B68026FD73FF00AA292A /* NavigationLazyView.swift in Sources */,
 				63FBB0EC27054CA2002AF2BC /* AllMovie.swift in Sources */,
 				639E938026FD599C0084EB47 /* APIClinet.swift in Sources */,
@@ -464,6 +482,7 @@
 				639E937726FD599C0084EB47 /* MovieDetailVM.swift in Sources */,
 				A4CD46B72728E77100EAACD2 /* AllReviewView.swift in Sources */,
 				639E937A26FD599C0084EB47 /* Modifier.swift in Sources */,
+				A44C5B6A2730DA20009C4B08 /* UserEditView.swift in Sources */,
 				639E938326FD599C0084EB47 /* RankMovie.swift in Sources */,
 				632C6ACD271D1AC700FFA0C4 /* User.swift in Sources */,
 				633E5B3D2716BC62003A74B7 /* ReviewWrite.swift in Sources */,
@@ -481,6 +500,7 @@
 				A48B8F362725592A0067C43C /* SignUpVM.swift in Sources */,
 				639E936126FD599C0084EB47 /* MySearchBar.swift in Sources */,
 				A4303E29272EC0B5001054FC /* Localized.swift in Sources */,
+				A44C5B8F27310879009C4B08 /* UserEditViewModel.swift in Sources */,
 				A4303E1C272E5E9D001054FC /* Preview.swift in Sources */,
 				A4CD46B9272907E800EAACD2 /* PhotoPicker.swift in Sources */,
 				639E931726FD59440084EB47 /* CinemaInfoAppApp.swift in Sources */,

@@ -56,7 +56,6 @@ class SignUpViewModel: ObservableObject {
 }
 
 extension SignUpViewModel {
-   
     func SignUp(profile: UIImage?) {
         loading = true
         if !checkField() {

@@ -7,7 +7,7 @@ struct PhotoPicker: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
     
     @ObservedObject var mediaItems: PickedMediaItems
-    var didFinishPicking: (_ didSelectItems: Bool) -> Void
+    @Binding var showPicker: Bool
     
     
     func makeUIViewController(context: Context) -> PHPickerViewController {
@@ -39,16 +39,21 @@ struct PhotoPicker: UIViewControllerRepresentable {
         }
         
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-            photoPicker.didFinishPicking(!results.isEmpty)
+            print("pciking")
+            print(results)
+            
+            photoPicker.showPicker.toggle()
             
             guard !results.isEmpty else {
+                print("없음")
                 return
             }
             
             let itemProvider = results[0].itemProvider
+            
+            print(itemProvider)
+            
             self.getPhoto(from: itemProvider)
-        
-            photoPicker.presentationMode.wrappedValue.dismiss()
         }
         private func getPhoto(from itemProvider: NSItemProvider) {
             if itemProvider.canLoadObject(ofClass: UIImage.self) {

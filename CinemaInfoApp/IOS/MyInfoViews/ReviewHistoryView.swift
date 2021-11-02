@@ -21,7 +21,7 @@ struct ReviewHistoryView: View {
                             .frame(width: 10, height: 20)
                     })
                     
-                    Text("리뷰 기록")
+                    Text(I18N.reviewHistory)
                         .font(.system(size: 26, weight: .bold))
                     
                     Spacer()
