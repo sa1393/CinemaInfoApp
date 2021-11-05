@@ -40,19 +40,14 @@ struct SearchView: View {
         .ignoresSafeArea(.keyboard)
         .padding(.top, 18)
         .padding(.horizontal, 6)
-        .navigationBarTitle("")
         .navigationBarHidden(true)
-        
+        .navigationBarTitleDisplayMode(.automatic)
     }
 }
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        ZStack {
-            Color.black
-            Preview(source: SearchView(), dark: true)
-        }
-        .preferredColorScheme(.dark)
-        
+        Preview(source: SearchView(), dark: true)
+            
     }
 }

@@ -13,7 +13,6 @@ extension MovieDB {
         if !size.isEmpty {
             urlStr.append(contentsOf: size)
         }
-
         
         var resultURL: URL?
         if let encodedStr = urlStr.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
@@ -26,7 +25,6 @@ extension MovieDB {
         var request = URLRequest(url: resultURL ?? URL(string: "")!)
         request.httpMethod = "GET"
         
-        
         return apiClient.loadData(request)
             .map(\.value)
             .eraseToAnyPublisher()
@@ -35,7 +33,7 @@ extension MovieDB {
 
 //login
 extension MovieDB {
-    static func SignIn(id: String, pwd: String) -> AnyPublisher<UserResponse, Error>{
+    static func signin(id: String, pwd: String) -> AnyPublisher<UserResponse, Error>{
         let url = URL(string: "\(baseURL)auth/local")
         
         var request = URLRequest(url: url ?? URL(string: "")!)
@@ -50,12 +48,12 @@ extension MovieDB {
         
         request.httpBody = httpBody
         
-        return apiClient.loadData(request, dispatch: DispatchQueue.global(qos: .utility))
+        return apiClient.loadData(request)
             .map(\.value)
             .eraseToAnyPublisher()
     }
     
-    static func SignOut() -> AnyPublisher<ResultStringResponse, Error>{
+    static func signout() -> AnyPublisher<ResultStringResponse, Error>{
         let url = URL(string: "\(baseURL)auth/logout")
         
         var request = URLRequest(url: url ?? URL(string: "")!)
@@ -77,7 +75,7 @@ extension MovieDB {
             .eraseToAnyPublisher()
     }
     
-    static func SignUp(id: String, name: String, pwd: String, profile: UIImage) -> AnyPublisher<ResultBoolResponse, Error> {
+    static func signUp(id: String, name: String, pwd: String, profile: UIImage) -> AnyPublisher<UserResponse, Error> {
         let url = URL(string: "\(baseURL)users/signup")
         let boundary = generateBoundary()
         
@@ -104,10 +102,34 @@ extension MovieDB {
             .map(\.value)
             .eraseToAnyPublisher()
     }
+    
+    static func userEdit(pwd: String) -> AnyPublisher<ResultBoolResponse, Error> {
+        let url = URL(string: "\(baseURL)users/edit")
+        let boundary = generateBoundary()
+        
+        var request = URLRequest(url: url ?? URL(string: "")!)
+        
+        request.httpMethod = "POST"
+        request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        let parameters: [String: String] = [
+            "changed_pwd": pwd
+        ]
+        
+        var httpBody = Data()
+        httpBody = appendBody(parameters: parameters, boundary: boundary, body: httpBody)
+        request.httpBody = httpBody
+        
+        return apiClient.loadData(request)
+            .map(\.value)
+            .eraseToAnyPublisher()
+    }
 }
 
 //review
 extension MovieDB {
+    
+    
     static func myReview() -> AnyPublisher<MyReviewResponse, Error>  {
         let resultURL = URL(string:"\(baseURL)users/review")
         
@@ -119,9 +141,9 @@ extension MovieDB {
             .eraseToAnyPublisher()
     }
     
-    static func myMovieReview(movieTitle: String) -> AnyPublisher<MovieResponse, Error>  {
+    static func myMovieReview(movieId: String) -> AnyPublisher<ReviewResponse, Error>  {
         
-        let urlStr = "\(baseURL)users/search/beta?title=\(movieTitle)"
+        let urlStr = "\(baseURL)users/review/one?movie_id=\(movieId)"
 
         var resultURL: URL?
         if let encodedStr = urlStr.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {

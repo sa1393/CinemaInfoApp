@@ -14,6 +14,7 @@ enum EditTab {
 
 struct UserEditView: View {
     @EnvironmentObject var baseViewModel: BaseViewModel
+    @Environment(\.presentationMode) var presentationMode
     @StateObject var userEditViewModel = UserEditViewModel()
     
     var body: some View {
@@ -43,27 +44,37 @@ struct UserEditView: View {
                                     )
                             })
                         }
+                        Spacer()
                     }
+                    .offset(x: userEditViewModel.tab == .passwordCheck ? 0 : -UIScreen.screenWidth)
+                    .opacity(userEditViewModel.tab == .passwordCheck ? 1 : 0)
                     
-                    VStack {
+                    VStack(alignment: .leading) {
+                        Text(I18N.passwordEdit)
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.white)
                         SignTextField(placeHolder: "", secure: false, signField: $userEditViewModel.editPwd)
                         
-                        Button(action: {
-                            userEditViewModel.userEdit()
-                        }, label: {
-                            Text(I18N.edit)
-                                .foregroundColor(Color.black)
-                                .font(.system(size: 18, weight: .bold))
-                                .frame(width: 120, height: 40)
-                                .cornerRadius(4)
-                                .background(Color.white)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 4)
-                                        .stroke(Color(hex: "#1f1f1f"), lineWidth: 4)
-                                )
-                        })
+                        VStack(alignment: .center, spacing: 25) {
+                            Button(action: {
+                                userEditViewModel.userEdit()
+                            }, label: {
+                                Text(I18N.edit)
+                                    .foregroundColor(Color.black)
+                                    .font(.system(size: 18, weight: .bold))
+                                    .frame(width: 120, height: 40)
+                                    .cornerRadius(4)
+                                    .background(Color.white)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .stroke(Color(hex: "#1f1f1f"), lineWidth: 4)
+                                    )
+                            })
+                        }
                         
+                        Spacer()
                     }
+                    .background(Color.black)
                     .offset(x: userEditViewModel.tab == .passwordCheck ? UIScreen.screenWidth : 0)
                 }
                 
@@ -71,9 +82,28 @@ struct UserEditView: View {
             }
             .foregroundColor(.white)
             .navigationBarHidden(true)
+            
+            if userEditViewModel.loading {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        Spacer()
+                    }
+                    
+                    Spacer()
+                }
+                .background(Color.black.opacity(0.9))
+            }
         }
-        .alert(isPresented: $userEditViewModel.pwdCheckAlert) {
-            Alert(title: Text(I18N.passwordCheck), message: Text(I18N.passwordCheckFail), dismissButton: .default(Text(I18N.close)))
+        .alert(isPresented: $userEditViewModel.alert) {
+            Alert(title: Text(userEditViewModel.msg.title), message: Text(userEditViewModel.msg.msg), dismissButton: .default(Text(I18N.close), action: {
+                baseViewModel.getUser()
+                presentationMode.wrappedValue.dismiss()
+                
+            }))
         }
     }
 }

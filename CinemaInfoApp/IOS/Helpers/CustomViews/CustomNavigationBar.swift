@@ -31,7 +31,6 @@ struct CustomNavigationBar: View {
 
 struct CustomNavigationBar_Previews: PreviewProvider {
     static var previews: some View {
-        
         Preview(source: CustomNavigationBar(title: "test"), dark: true)
     }
 }

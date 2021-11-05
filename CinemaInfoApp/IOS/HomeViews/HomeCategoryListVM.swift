@@ -5,7 +5,6 @@ import Combine
 class HomeCategoryListViewModel: ObservableObject {
     @Published var movies: [MovieProtocol] = []
     @Published var loading: Bool = false
-    
     @Published var enteredForeground = true
     
     var title: String?
@@ -13,10 +12,9 @@ class HomeCategoryListViewModel: ObservableObject {
     var rated: AgeType?
     var size: Int?
     
-    let willChange = PassthroughSubject<Bool, Never>()
+    var cancellable: AnyCancellable?
     
-    init() {
-    }
+    var initHasRun = false
     
     func setting(title: String? = nil, genore: GenoreType? = nil, rated: AgeType? = nil, size: Int? = nil) {
         self.title = title
@@ -57,6 +55,15 @@ class HomeCategoryListViewModel: ObservableObject {
         
         return resultStr
     }
+    
+    func removeMovie(movie: Movie) {
+        if let index = movies.firstIndex { $0.movie.movieId == movie.movieId} {
+            movies.remove(at: index)
+        }
+        
+    }
+    
+    init() {}
 }
 
 extension HomeCategoryListViewModel {
@@ -77,10 +84,15 @@ extension HomeCategoryListViewModel {
                     print("SearchCategory Error: \(result)")
                     break
                 }
-                self?.loading = false
+                DispatchQueue.main.async {
+                    self?.loading = false
+                }
+                
             }, receiveValue: { [weak self] value in
-                if let movies = value.movies {
-                    self?.movies = movies.filter{$0.movie.posterImgURL != nil}
+                DispatchQueue.main.async {
+                    if let movies = value.movies {
+                        self?.movies = movies.filter{$0.movie.posterImgURL != nil}
+                    }
                 }
                 
             })

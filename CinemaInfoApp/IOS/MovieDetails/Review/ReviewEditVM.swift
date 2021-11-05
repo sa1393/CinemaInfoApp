@@ -4,26 +4,28 @@ import Combine
 
 class ReviewEditViewModel: ObservableObject {
     @Published var comment: String = ""
-    
+    @Published var loading: Bool = false
     @Published var offReview = false
+    
+    var reviewEditCancellable: AnyCancellable?
     var cancellable: AnyCancellable?
     
-    @Published var loading: Bool = false
-
     func offReviewView() {
         offReview = true
     }
     
-    init() {
-        
+    func stop() {
+        reviewEditCancellable?.cancel()
     }
+    
+    init() {}
 }
 
 extension ReviewEditViewModel {
     func ReviewEdit(movieId: String?, idx: Int?, rating: Int) {
         loading = true
         if let movieId = movieId, let idx = idx {
-            MovieDB.editReview(idx: idx, movieId: movieId, comment: comment, ratingNum: rating)
+            reviewEditCancellable = MovieDB.editReview(idx: idx, movieId: movieId, comment: comment, ratingNum: rating)
                 .mapError{ (error) -> Error in
                     
                     return error
@@ -37,7 +39,10 @@ extension ReviewEditViewModel {
                         print("ReviewWrite Error: \(error)")
                     }
                     
-                    self?.loading = false
+                    DispatchQueue.main.async {
+                        self?.loading = false
+                    }
+                    
                 }, receiveValue: {
                     print("review Write value: \($0)")
                 })

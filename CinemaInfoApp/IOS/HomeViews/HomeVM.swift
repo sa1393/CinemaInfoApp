@@ -16,9 +16,13 @@ class HomeVM : ObservableObject{
     @Published var rankMovies: [RankMovie] = []
     
     @Published var loading: Bool = false
-    
+    @Published var fetchStart: Bool = false
     @Published var rankLoading: Bool = false
+    @Published var initHasRun: Bool = false
     
+    var categoryFetchFunc: [()->Void] = []
+    
+    var cancellable: AnyCancellable?
     var rankCancellationToken: AnyCancellable?
     
     public var allCategories: [String] {
@@ -26,12 +30,22 @@ class HomeVM : ObservableObject{
     }
     
     public func setCategories() {
+        categoryMovies = [:]
         categoryMovies["성인&액션 영화"] = MovieOption(title: nil, genore: .action, rated: .adult, size: 12)
         categoryMovies["판타지 영화"] = MovieOption(title: nil, genore: .fantasy, rated: .adult, size: 12)
-        categoryMovies["따뜻한 가족 영화"] = MovieOption(title: nil, genore: .family, rated: .adult, size: 12)
         categoryMovies["오싹한 공포 영화"] = MovieOption(title: nil, genore: .horror, rated: .adult, size: 12)
         categoryMovies["청불&범죄 영화"] = MovieOption(title: nil, genore: .crime, rated: .adult, size: 12)
         categoryMovies["짜릿한 스릴러 영화"] = MovieOption(title: nil, genore: .thriller, rated: .adult, size: 12)
+    }
+    
+    func categoryiesFetch() {
+        for fun in categoryFetchFunc {
+            fun()
+        }
+    }
+    
+    func stop() {
+        rankCancellationToken?.cancel()
     }
     
     init() {
@@ -42,7 +56,16 @@ class HomeVM : ObservableObject{
 extension HomeVM {
     func fetchRankMovies(size: Int?) {
         rankLoading = true
-        rankCancellationToken = MovieDB.getRequest("movies/", endPoint: "rank",  type: MovieRankResponse(movies: []))
+    
+        var option: String
+        if let size = size {
+            option = "offset=0&size=\(size)"
+        }
+        else {
+            option = ""
+        }
+        
+        rankCancellationToken = MovieDB.getRequest("movies/", endPoint: "rank?\(option)",  type: MovieRankResponse(movies: []))
             .mapError({ (error) -> Error in
                 return error
             })
@@ -54,18 +77,12 @@ extension HomeVM {
                     print("RankFail: \(error)")
                 }
                 
-                self?.rankLoading = false
+                DispatchQueue.main.async {
+                    self?.rankLoading = false
+                }
             }, receiveValue: { [weak self] value in
                 if let movies = value.movies {
                     self?.rankMovies = movies
-//                    if movies.count > 5 {
-//                        self?.rankMovies = movies[0...5]
-//                    }
-//                    else {
-//                        self?.rankMovies = movies
-//                    }
-//
-                    
                 }
                 
             })

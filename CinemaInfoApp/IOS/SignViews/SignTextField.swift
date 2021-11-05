@@ -34,7 +34,6 @@ struct SignTextField: View {
                 .padding(.horizontal, 12)
                 .foregroundColor(Color.white)
                 
-                
             }
             .frame(height: 50)
             .background(isTapped ? Color(hex: "#464646") : Color(hex: "#323232"))
@@ -58,7 +57,7 @@ struct SignTextField: View {
 
 struct SignTextField_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView()
+        Preview(source: SignInView(), dark: true)
             .environmentObject(BaseViewModel())
     }
 }

@@ -29,34 +29,45 @@ struct ReviewHistoryView: View {
                 }
                 .padding(.vertical, 8)
                 .padding(.horizontal, 18)
+                if reviewHistoryViewModel.refresh.started && reviewHistoryViewModel.refresh.released {
+                   ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .frame(height: 20)
+                }
+      
                 ScrollView(showsIndicators: false) {
+                    CustomPullToScroll(refresh: $reviewHistoryViewModel.refresh) {
+                        reviewHistoryViewModel.fetchMyReviews()
+                    }
+                    
                     VStack(alignment: .leading) {
-                        ForEach(reviewHistoryViewModel.myReviewMovieId(), id: \.self) { movie in
+                        ForEach(reviewHistoryViewModel.myReviews, id: \.self) { myReview in
+                            
                             VStack {
-                                
                                 HStack {
-                                    Text(movie.title ?? "")
+                                    Text(myReview.movie.movie.title ?? "")
                                         .font(.system(size: 18, weight: .bold))
-                                    
+
                                     Spacer()
-                                    
+
                                     NavigationLink(destination: {
-                                        NavigationLazyView(MovieDetail(movie: movie))
+                                        NavigationLazyView(MovieDetail(movie: myReview.movie))
                                     }, label: {
                                         Image(systemName: "info.circle")
                                             .resizable()
                                             .frame(width: 30, height: 30)
                                     })
                                 }
+                                ReviewView(review: myReview.review, movie: myReview.movie, myReview: true, allReviewViewModel: allReviewViewModel) {
                                     
-                                ReviewView(review: reviewHistoryViewModel.myReviews[movie]!, movie: movie, myReview: true, allReviewViewModel: allReviewViewModel) {
-                                    reviewHistoryViewModel.myReviews.removeValue(forKey: movie)
+                                    if let index = reviewHistoryViewModel.myReviews.firstIndex(of: myReview) {
+                                        reviewHistoryViewModel.myReviews.remove(at: index)
+                                    }
                                     
+
                                 }
-                                
-                                
                             }
-                            
+
                         }
                         if reviewHistoryViewModel.loading {
                             VStack(alignment: .center) {
@@ -70,7 +81,9 @@ struct ReviewHistoryView: View {
                         
                     }
                     .padding(.horizontal, 6)
+                    .offset(y: reviewHistoryViewModel.refresh.started && !reviewHistoryViewModel.refresh.released ? 28 : 0)
                 }
+                
                 
                 Spacer()
             }
@@ -89,11 +102,21 @@ struct ReviewHistoryView: View {
             reviewHistoryViewModel.stop()
         }
     }
+    
+    func reloadData() {
+        if reviewHistoryViewModel.refresh.released {
+            DispatchQueue.main.async {
+                reviewHistoryViewModel.fetchMyReviews()
+                
+            }
+        }
+        
+    }
 }
 
 struct ReviewHistoryView_Previews: PreviewProvider {
     static var previews: some View {
-        ReviewHistoryView()
+        Preview(source: ReviewHistoryView(), dark: true)
             .environmentObject(BaseViewModel())
     }
 }

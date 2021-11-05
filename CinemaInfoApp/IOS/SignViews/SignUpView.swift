@@ -5,8 +5,9 @@ import UIKit
 struct SignUpView: View {
     @State private var showPickerSheet = false
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var signUpViewModel = SignUpViewModel()
+    @StateObject var signUpViewModel = SignUpViewModel()
     @ObservedObject var mediaItems = PickedMediaItems()
+    
     var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: 0) {
@@ -97,9 +98,10 @@ struct SignUpView: View {
                .$offSign
                .sink(receiveValue: { offSign in
                    guard offSign else { return }
+                   print("start")
 
                    DispatchQueue.main.async {
-                       print("phpPciker 닫기 \(self)")
+                       print(offSign)
                        self.presentationMode.wrappedValue.dismiss()
                    }
                }
@@ -113,7 +115,6 @@ struct SignUpView: View {
 
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
-        
         Preview(source: SignUpView(), dark: true)
     }
 }

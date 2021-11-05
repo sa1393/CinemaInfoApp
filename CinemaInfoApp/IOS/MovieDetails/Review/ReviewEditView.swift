@@ -6,8 +6,9 @@ struct ReviewEditView: View {
 
     var movie: MovieProtocol
     var review: Review
-    @StateObject var reviewEditViewModel = ReviewEditViewModel()
+    @ObservedObject var reviewEditViewModel = ReviewEditViewModel()
     @State var currentRatingNum: Int = 10
+    @State var isTapped = false
 
     init(movie: MovieProtocol, review: Review) {
         self.movie = movie
@@ -42,7 +43,7 @@ struct ReviewEditView: View {
                             .frame(width: 20, height: 20)
                     })
                     
-                    Text("리뷰 수정")
+                    Text(I18N.reviewEdit)
                         .font(.system(size: 26, weight: .bold))
                         .foregroundColor(.white)
                     
@@ -58,7 +59,7 @@ struct ReviewEditView: View {
                         Text(baseViewModel.user?.name ?? "")
                             .font(.system(size: 14))
 
-                        Text("리뷰는 공개되며 내 계정의 정보가\n일부 포함됩니다.")
+                        Text(I18N.reviewWriteContent)
                             .lineSpacing(1)
                             .font(.system(size: 14))
                             
@@ -71,7 +72,6 @@ struct ReviewEditView: View {
 
                                 if index % 2 == 1{
                                     Button(action: {
-                                        print("왼쪽 별")
                                         currentRatingNum = index
                                     }, label: {
                                         Image(systemName: "star.leadinghalf.filled")
@@ -86,7 +86,6 @@ struct ReviewEditView: View {
                                 }
                                 else if index % 2 == 0{
                                     Button(action: {
-                                        print("오른쪽 별")
                                         currentRatingNum = index
                                     }, label: {
                                         Image(systemName: "star.leadinghalf.filled")
@@ -106,7 +105,7 @@ struct ReviewEditView: View {
                         
                     }
 
-                    ReviewTextField(text: $reviewEditViewModel.comment)
+                    ReviewTextField(text: $reviewEditViewModel.comment, isTapped: $isTapped)
                         
                     HStack {
                         Spacer()
@@ -115,22 +114,17 @@ struct ReviewEditView: View {
                             
                             presentationMode.wrappedValue.dismiss()
                         }, label: {
-                            ZStack {
-                                Rectangle()
-                                    .frame(width: 100, height: 30)
-                                    .cornerRadius(4)
-                                   
                                 HStack{
                                     Image(systemName: "pencil")
                                         .foregroundColor(.black)
                                         .font(.system(size: 18, weight: .bold))
-                                    Text("리뷰 작성")
+                                    Text(I18N.reviewWrite)
                                         .foregroundColor(.black)
                                 }
-                            }
-                           
                         })
+                            .background(Rectangle())
                         Spacer()
+                        
                     }
                     
                 }
@@ -169,11 +163,16 @@ struct ReviewEditView: View {
                }
            )
         }
+        .onDisappear {
+            self.reviewEditViewModel.stop()
+        }
     }
 }
 
 struct ReviewEdit_Previews: PreviewProvider {
     static var previews: some View {
-        ReviewEditView(movie: exampleMovie1, review: exampleReview1)
+        Preview(source: ReviewEditView(movie: exampleMovie1, review: exampleReview1), dark: true)
+            .environmentObject(BaseViewModel())
+        
     }
 }

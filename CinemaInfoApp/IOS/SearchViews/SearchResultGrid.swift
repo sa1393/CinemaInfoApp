@@ -27,13 +27,15 @@ struct SearchResultGrid: View {
             }
         }
         else {
-            LazyVGrid(columns: columns, spacing: 5) {
+            LazyVGrid(columns: columns, spacing: 0) {
                 ForEach(searchViewModel.searchResultMovies.map { $0.movie }, id: \.self) { movie in
                     
                     NavigationLink(destination: NavigationLazyView(MovieDetail(movie: searchViewModel.searchResultMovies.first{
                         $0.movie.movieId == movie.movieId
                     }!))) {
-                        StandardHomeMovie(posterImgURL: movie.posterImgURL)
+                        StandardHomeMovie(posterImgURL: movie.posterImgURL) {
+                            searchViewModel.removeMovie(movie: movie)
+                        }
                             .frame(height: UIScreen.screenWidth / 3 / 2 * 3 - 10)
                     }
                 }

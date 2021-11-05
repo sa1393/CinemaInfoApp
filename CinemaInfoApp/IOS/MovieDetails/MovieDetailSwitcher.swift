@@ -82,20 +82,20 @@ struct MovieDetailSwitcher: View {
                                 if let review = review, let myReview = myReview{
                                     if myReview.idx == review.idx {
                                         ReviewView(review: review, movie: movie, myReview: true, allReviewViewModel: allReviewViewModel) {
-                                            movieDetailVM.fetchMyReviews()
+                                            movieDetailVM.fetchMyReview(movieId: movie.movie.movieId)
                                             movieDetailVM.fetchReviews(offset: 0, size: 4)
                                         }
                                     }
                                     else {
                                         ReviewView(review: review, movie: movie, myReview: false, allReviewViewModel: allReviewViewModel) {
-                                            movieDetailVM.fetchMyReviews()
+                                            movieDetailVM.fetchMyReview(movieId: movie.movie.movieId)
                                             movieDetailVM.fetchReviews(offset: 0, size: 4)
                                         }
                                     }
                                 }
                                 else {
                                     ReviewView(review: review, movie: movie, myReview: false, allReviewViewModel: allReviewViewModel) {
-                                        movieDetailVM.fetchMyReviews()
+                                        movieDetailVM.fetchMyReview(movieId: movie.movie.movieId)
                                         movieDetailVM.fetchReviews(offset: 0, size: 4)
                                     }
                                 }
@@ -133,15 +133,7 @@ enum DetailTab: String {
 
 struct MovieDetailSwitcher_Previews: PreviewProvider {
     static var previews: some View {
-        ScrollView {
-            ZStack {
-                Color.black
-                    
-                MovieDetailSwitcher(movieDetailVM: MovieDetailVM(movie: exampleMovie1), movie: exampleMovie1, screening: false, myReview: exampleReview1, allReviewViewModel: AllReviewViewModel())
-                    
-            }
-        }
-        
+        Preview(source: MovieDetailSwitcher(movieDetailVM: MovieDetailVM(movie: exampleMovie1), movie: exampleMovie1, screening: false, myReview: exampleReview1, allReviewViewModel: AllReviewViewModel()), dark: true)
         
     }
 }

@@ -1,9 +1,10 @@
 import SwiftUI
 import Kingfisher
 
-struct StandardHomeMovie: View {
+struct StandardHomeMovie: View{
     let posterImgURL: URL?
-
+    let movieError: () -> Void
+    
     var body: some View {
         ZStack {
             Color.black
@@ -21,7 +22,11 @@ struct StandardHomeMovie: View {
                                 .aspectRatio(0.7, contentMode: .fill)
                         
                         }
-                        .fade(duration: 0.6)
+                        .fade(duration: 0.3)
+                        .onFailure { error in
+                            print(error.localizedDescription)
+                            movieError()
+                        }
                         .scaledToFit()
                         .clipped()
                         .cornerRadius(8)
@@ -42,10 +47,8 @@ struct StandardHomeMovie: View {
 
 struct StandardHomeMovie_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-            .environmentObject(BaseViewModel())
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
-        
+        Preview(source: ContentView(), dark: true)
+            .environmentObject(BaseViewModel())        
     }
 }
 

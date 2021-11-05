@@ -8,7 +8,9 @@
 "review_history" = "리뷰 기록";
 "review_all" = "모든 리뷰";
 "review_edit" = "리뷰 수정";
+"review_delete" = "리뷰 삭제";
 "review_write_content" = "리뷰는 공개되며 내 계정의 정보가\n일부 포함됩니다.";
+
 
 //Search
 "search_result" = "검색 결과";
@@ -23,7 +25,8 @@
 "sign_out" = "로그아웃";
 "user_info" = "회원정보";
 "user_edit" = "회원정보 수정";
-"eidt" = "수정";
+"edit" = "수정";
+"password_edit" = "비밀번호 수정";
 
 "id" = "아이디";
 "pwd" = "비밀번호";
@@ -34,7 +37,6 @@
 
 "check" = "확인";
 "password_check" = "비밀번호 확인";
-"password_check_fail" = "비밀번호가 다릅니다";
 
 //Tutorial
 
@@ -46,8 +48,27 @@
 
 "setting" = "설정";
 
+//Tab
+"home" = "홈";
+"search" = "검색";
+"my_info" = "내 정보";
+
 //MSG
 "no_image" = "이미지 없음";
 "signin_fail" = "로그인에 실패했습니다.";
 "signup_fail" = "회원가입에 실패했습니다.";
+
+"id_empty_msg" = "아이디를 입력해주세요";
+"password_empty_msg" = "비밀번호를 입력해주세요";
+
+"password_check_fail" = "비밀번호가 다릅니다";
+"password_check_Error" = "비밀번호 확인 실패";
+
+"password_edit_succes" = "비밀번호 변경 성공";
+
+"password_edit_fail" = "비밀번호 변경 실패";
+
+
 "close" = "닫기";
+
+

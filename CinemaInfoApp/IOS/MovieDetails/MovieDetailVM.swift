@@ -3,24 +3,22 @@ import SwiftUI
 
 class MovieDetailVM: ObservableObject {
     @Published var reviews: [Review] = []
+    @Published var myReview: Review?
     @Published var loading: Bool = false
-
     @Published var myReviewLoading: Bool = false
     
-    @Published var myReview: Review?
-    
     var reviewEndIndex: Int = 0
-    
     var urlStr: String = ""
     
     var movie: MovieProtocol
+    
+    func previewComment() {
+        fetchReviews(offset: 0, size: 4)
+    }
+    
     init(movie: MovieProtocol = exampleMovie1) {
         self.movie = movie
         self.urlStr = "\(SecretText.baseURL)movies/review?movie_id=\(movie.movie.movieId)"
-    }
-
-    func previewComment() {
-        fetchReviews(offset: 0, size: 4)
     }
 }
 
@@ -42,40 +40,50 @@ extension MovieDetailVM {
                 case .failure(let error) :
                     print("\(self?.movie.movie.title) Detail Error: \(error)")
                 }
-                self?.loading = false
-            }, receiveValue: { [weak self] value in
-                self?.reviews = []
                 
-                if let reviews = value.reviews {
-                    self?.reviews = reviews
+                DispatchQueue.main.async {
+                    self?.loading = false
+                }
+            }, receiveValue: { [weak self] value in
+                DispatchQueue.main.async {
+                    self?.reviews = []
+                    
+                    if let reviews = value.reviews {
+                        self?.reviews = reviews
+                    }
                 }
             })
     }
-
-    func fetchMyReviews() {
+    
+    func fetchMyReview(movieId: String?) {
         myReviewLoading = true
-        MovieDB.myReview()
+        guard let movieId = movieId else {
+            myReviewLoading = false
+            return
+        }
+        
+        MovieDB.myMovieReview(movieId: movieId)
             .mapError({ (error) -> Error in
                 return error
             })
             .sink(receiveCompletion: { [weak self] result in
                 switch result {
                 case .finished :
-                    print("MyReviews Finished")
+                    print("MyReview Finished")
                 case .failure(let error) :
-                    print("MyReviews error: \(error)")
+                    print("MyReview error: \(error)")
                 }
                 self?.myReviewLoading = false
             }, receiveValue: { [weak self] result in
                 self?.myReview = nil
                 if let reviews = result.reviews {
-                    for (review) in reviews {
-                        if self?.movie.movie.movieId == review.movie_id {
-                            self?.myReview = review
-                        }
+                    if reviews.count > 0 {
+                        self?.myReview = reviews[0]
                     }
                 }
                 
+                
             })
     }
+
 }

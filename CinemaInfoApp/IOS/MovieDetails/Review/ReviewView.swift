@@ -8,7 +8,6 @@ struct ReviewView: View {
     @ObservedObject var allReviewViewModel: AllReviewViewModel
     @EnvironmentObject var baseViewModel: BaseViewModel
     
-    
     @State var reviewMenu: Bool = false
     
     var reloadData: () -> Void
@@ -78,7 +77,6 @@ struct ReviewView: View {
                         }
                     }
                     
-                    
                     Spacer()
                     
                     Text(review.created ?? "")
@@ -112,7 +110,7 @@ struct ReviewView: View {
                             NavigationLink(destination: {
                                 NavigationLazyView(ReviewEditView(movie: movie, review: review))
                             }, label: {
-                                Text(I18N.review)
+                                Text(I18N.reviewEdit)
                                     .foregroundColor(.black)
                                     .padding(8)
                             })
@@ -120,11 +118,12 @@ struct ReviewView: View {
                             Button(action: {
                                 withAnimation(.easeInOut.speed(1.5)){
                                     allReviewViewModel.DeleteReview(idx: review.idx, movieId: movie.movie.movieId, realoadData: reloadData)
+                                    
                                     allReviewViewModel.menuControl?.wrappedValue = false
                                     allReviewViewModel.editMode = false
                                 }
                             }, label: {
-                                Text("리뷰 삭제")
+                                Text(I18N.reviewDelete)
                                     .foregroundColor(.black)
                                     .padding(8)
                                 
@@ -151,25 +150,15 @@ struct ReviewView: View {
                 }
                 .offset(y: -18)
             }
-            
-           
-            
         }
     }
 }
 
 struct ReviewComment_Previews: PreviewProvider {
     static var previews: some View {
-
-        ZStack {
-            Color.black
+        Preview(source: ReviewView(review: exampleReview1, movie: exampleMovie1, myReview: true, allReviewViewModel: AllReviewViewModel()) {
             
-            ReviewView(review: exampleReview1, movie: exampleMovie1, myReview: true, allReviewViewModel: AllReviewViewModel()) {
-                
-            }
-        }
-        
-      
-       
+        }, dark: true)
+            .environmentObject(BaseViewModel())
     }
 }

@@ -29,7 +29,7 @@ struct Movie: Hashable, Equatable {
                 return nil
             }
             else {
-                if let url = URL(string: "\(SecretText.baseURL)images/beta/\(posterImg)") {
+                if let url = URL(string: "\(SecretText.baseURL)images/\(posterImg)") {
                     return url
                 }else {
                     return nil
@@ -39,8 +39,6 @@ struct Movie: Hashable, Equatable {
         else {
             return nil
         }
-        
-        
     }
     
     
@@ -65,20 +63,26 @@ struct Movie: Hashable, Equatable {
         else {
             return []
         }
-       
-        
-       
     }
     
     var duration: String {
-        let tempDuration: String? = memos.filter{$0.contains("분") && $0.contains("초")}[0]
-        return tempDuration ?? ""
+        let tempDuration: [String] = memos.filter{$0.contains("분") && $0.contains("초")}
+        if !tempDuration.isEmpty {
+            return tempDuration[0]
+        }
+        else {
+            return ""
+        }
     }
     
     var age: AgeType {
-        let tempYear: String = (memos.filter{$0.contains("관람가") || $0.contains("관람불가")}[0] ).trimmingCharacters(in: [" "])
+        var tempYear: [String] = memos.filter{$0.contains("관람가") || $0.contains("관람불가")}
+        var resultTempYear: String = ""
+        if !tempYear.isEmpty {
+            tempYear[0].trimmingCharacters(in: [" "])
+        }
         
-        return AgeType(rawValue: tempYear) ?? AgeType.adult
+        return AgeType(rawValue: resultTempYear) ?? AgeType.adult
     }
     
     var movieSizeType: SizeType {

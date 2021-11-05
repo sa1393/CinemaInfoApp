@@ -32,7 +32,6 @@ struct MovieRatingResponse: Codable {
     }
 }
 
-
 struct ReviewResponse: Codable {
     let reviews: [Review]?
     

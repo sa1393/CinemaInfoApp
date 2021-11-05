@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import Combine
 
 class AllReviewViewModel: ObservableObject {
     @Published var reviews: [Review] = []
@@ -7,6 +8,7 @@ class AllReviewViewModel: ObservableObject {
     @Published var editMode: Bool = false
     
     var menuControl: Binding<Bool>?
+    var allReviewCancellable: AnyCancellable?
     
     var page: Int = 0
     var last: Bool = false
@@ -21,6 +23,10 @@ class AllReviewViewModel: ObservableObject {
         self.page += size
         fetchReviews(offset: 0, size: size, movieId: movieId, first: true)
     }
+    
+    func stop() {
+        allReviewCancellable?.cancel()
+    }
 }
 
 extension AllReviewViewModel{
@@ -28,7 +34,7 @@ extension AllReviewViewModel{
         reviewLoading = true
         let sizeURL = "&offset=\(offset)&size=\(size)"
         if let movieId = movieId {
-            MovieDB.getRequest("movies/review?movie_id=", endPoint: "\(movieId)", size: sizeURL, type: ReviewResponse(reviews: []))
+            allReviewCancellable = MovieDB.getRequest("movies/review?movie_id=", endPoint: "\(movieId)", size: sizeURL, type: ReviewResponse(reviews: []))
                 .mapError({ (error) -> Error in
                     return error
                 })
@@ -90,7 +96,10 @@ extension AllReviewViewModel{
                     switch result {
                     case .finished :
                         print("DeleteReview Finished")
-                        realoadData()
+                        DispatchQueue.main.async {
+                            realoadData()
+                        }
+                        
                     case .failure(let error) :
                         print("DeleteReview Error: \(error)")
                     }

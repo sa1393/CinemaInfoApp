@@ -4,6 +4,11 @@ import UIKit
 
 struct ContentView: View{
     @EnvironmentObject var baseViewModel: BaseViewModel
+    @Namespace private var animation
+    
+    init() {
+        UITabBar.appearance().isHidden = true
+    }
     
     var body: some View {
         VStack {
@@ -15,16 +20,18 @@ struct ContentView: View{
                     TabView(selection: $baseViewModel.selected) {
                         HomeView()
                             .tag(Tab.home)
+                            
                         SearchView()
                             .tag(Tab.search)
+                            
                         MyInfoView()
                             .tag(Tab.my)
                     }
                     .overlay(
                         HStack {
-                            TabButton(tab: .home, systemIcon: "house.fill")
-                            TabButton(tab: .search, systemIcon: "magnifyingglass")
-                            TabButton(tab: .my, systemIcon: "person.fill")
+                            TabButton(tab: .home, systemIcon: "house.fill", tabTitle: I18N.home)
+                            TabButton(tab: .search, systemIcon: "magnifyingglass", tabTitle: I18N.search)
+                            TabButton(tab: .my, systemIcon: "person.fill", tabTitle: I18N.myInfo)
                         }
                         .frame(height: UIScreen.tabbarHeight)
                         .background(
@@ -33,6 +40,8 @@ struct ContentView: View{
                         )
                         , alignment: .bottom
                     )
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                    .ignoresSafeArea(.keyboard)
                 }
                 .navigationViewStyle(.stack)
                 .navigationBarHidden(true)
@@ -44,25 +53,25 @@ struct ContentView: View{
 
 extension ContentView {
     @ViewBuilder
-    func TabButton(tab: Tab, systemIcon: String) -> some View{
+    func TabButton(tab: Tab, systemIcon: String, tabTitle: String) -> some View{
         Button(action: {
-            baseViewModel.selected = tab
+            withAnimation {
+                baseViewModel.selected = tab
+            }
         }) {
             
             VStack(spacing: 0) {
-                ZStack {
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(height: 2)
+                    .padding(.horizontal, 2)
+                
+                if  baseViewModel.selected == tab {
                     Rectangle()
-                        .fill(Color.clear)
+                        .fill(Color.white)
                         .frame(height: 2)
                         .padding(.horizontal, 2)
-                    
-                    if  baseViewModel.selected == tab {
-                        Rectangle()
-                            .fill(Color.white)
-                            .frame(height: 2)
-                            .padding(.horizontal, 2)
-                            .offset(y: 4)
-                    }
+                        .matchedGeometryEffect(id: "tab", in: animation)
                 }
                 
                 Spacer()
@@ -75,11 +84,10 @@ extension ContentView {
                         .frame(width: 30, height: 30)
                         .foregroundColor(baseViewModel.selected == tab ? Color.white : Color(hex: "#767370"))
                     
-                    
-                    Text(tab.rawValue)
+                    Text(tabTitle)
                         .foregroundColor(baseViewModel.selected == tab ? Color.white : Color(hex: "#767370"))
                         .font(.system(size: 11, weight: .bold, design: .rounded))
-                    
+
                 }
                 Spacer()
             }
@@ -88,7 +96,6 @@ extension ContentView {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    
     static var previews: some View {
         Preview(source: ContentView(), dark: true)
             .environmentObject(BaseViewModel())

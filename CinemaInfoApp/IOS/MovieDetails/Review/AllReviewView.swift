@@ -68,11 +68,15 @@ struct AllReviewView: View {
         .onAppear {
             allReviewViewModel.firstLoadComment(movieId: movieDetailVM.movie.movie.movieId, size: 20)
         }
+        .onDisappear {
+            allReviewViewModel.stop()
+        }
     }
 }
 
 struct AllReviewView_Previews: PreviewProvider {
     static var previews: some View {
-        AllReviewView(movieDetailVM: MovieDetailVM(movie: exampleMovie1), allReviewViewModel: AllReviewViewModel())
+        Preview(source: AllReviewView(movieDetailVM: MovieDetailVM(movie: exampleMovie1), allReviewViewModel: AllReviewViewModel()), dark: true)
+        
     }
 }

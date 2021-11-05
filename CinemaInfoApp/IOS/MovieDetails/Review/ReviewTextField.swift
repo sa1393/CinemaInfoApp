@@ -1,14 +1,17 @@
 import SwiftUI
 
 struct ReviewTextField: View {
-    @State var isTapped: Bool = false
     @Binding var text: String
+    @Binding var isTapped: Bool
     
-    init(text: Binding<String>) {
+    init(text: Binding<String>, isTapped: Binding<Bool>) {
         self._text = text
+        self._isTapped = isTapped
+        print(isTapped.wrappedValue)
         
         UITextView.appearance().backgroundColor = .clear
     }
+    
     var body: some View {
         VStack {
             TextEditor(text: $text)
@@ -41,6 +44,7 @@ struct ReviewTextField: View {
 
 struct CommentTextFile_Previews: PreviewProvider {
     static var previews: some View {
-        ReviewWrite(movie: exampleMovie1)
+        Preview(source: ReviewWrite(movie: exampleMovie1), dark: true)
+            .environmentObject(BaseViewModel())
     }
 }

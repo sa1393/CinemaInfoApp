@@ -21,17 +21,15 @@ struct TutorialView: View {
                             VStack(alignment: .leading) {
                                 Spacer()
                                 HStack {
-                                    VStack(alignment: .leading) {
+                                    VStack(alignment: .leading, spacing: 12) {
                                         Text(I18N.movieInfo)
                                             .font(.system(size: 36, weight: .bold))
                                             .foregroundColor(Color.white)
-                                            .padding(.vertical, 12)
                                         
                                         Text(I18N.tutorialMovieInfoContent)
                                             .font(.system(size: 18, weight: .bold))
                                             .foregroundColor(Color.white.opacity(0.8))
                                     }
-                            
                                     .offset(y: 170)
                                     
                                     Spacer()
@@ -52,7 +50,7 @@ struct TutorialView: View {
                                 Spacer()
                                 HStack {
                                     VStack(alignment: .leading) {
-                                        Text(I18N.reviewWirte)
+                                        Text(I18N.reviewWrite)
                                             .font(.system(size: 36, weight: .bold))
                                             .foregroundColor(Color.black)
                                             .padding(.vertical, 12)
@@ -84,7 +82,7 @@ struct TutorialView: View {
                         }, label: {
                             HStack {
                                 Spacer()
-                                Text(baseViewModel.isLogin ? I18N.signin : I18N.noLoginStart)
+                                Text(baseViewModel.isLogin ? I18N.start : I18N.noLoginStart)
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundColor(Color.white)
                                 Spacer()
@@ -120,9 +118,10 @@ struct TutorialView: View {
                         }
                         
                     }
-                    .padding(.vertical, 12)
+                    .frame(height: 50)
                     .padding(.horizontal, 8)
                     .background(Color.black)
+                    
                     Spacer()
                 }
                 
@@ -136,7 +135,7 @@ struct TutorialView: View {
 
 struct StartView_Previews: PreviewProvider {
     static var previews: some View {
-        TutorialView()
+        Preview(source: TutorialView(), dark: true)
             .environmentObject(BaseViewModel())
     }
 }

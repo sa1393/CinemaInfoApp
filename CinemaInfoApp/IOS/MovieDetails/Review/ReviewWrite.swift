@@ -8,7 +8,7 @@ struct ReviewWrite: View {
     var movie: MovieProtocol
     @StateObject var reviewWriteViewModel = ReviewWriteViewModel()
     @State var ratingNum: Int = 10
-
+    @State var isTapped = false
     init(movie: MovieProtocol) {
         self.movie = movie
     }
@@ -29,7 +29,7 @@ struct ReviewWrite: View {
                             .frame(width: 20, height: 20)
                     })
                     
-                    Text(I18N.reviewWirte)
+                    Text(I18N.reviewWrite)
                         .font(.system(size: 26, weight: .bold))
                         .foregroundColor(.white)
                     
@@ -46,7 +46,7 @@ struct ReviewWrite: View {
                             .font(.system(size: 14))
                         
 
-                        Text("")
+                        Text(I18N.reviewWriteContent)
                             .lineSpacing(1)
                             .font(.system(size: 14))
                             
@@ -92,7 +92,7 @@ struct ReviewWrite: View {
                         
                     }
 
-                    ReviewTextField(text: $reviewWriteViewModel.comment)
+                    ReviewTextField(text: $reviewWriteViewModel.comment, isTapped: $isTapped)
                         
                     HStack {
                         Spacer()
@@ -108,7 +108,7 @@ struct ReviewWrite: View {
                                     Image(systemName: "pencil")
                                         .foregroundColor(.black)
                                         .font(.system(size: 18, weight: .bold))
-                                    Text(I18N.reviewWirte)
+                                    Text(I18N.reviewWrite)
                                         .foregroundColor(.black)
                                 }
                             }
@@ -153,12 +153,15 @@ struct ReviewWrite: View {
                }
            )
         }
+        .onDisappear {
+            self.reviewWriteViewModel.stop()
+        }
     }
 }
 
 struct CommentWrite_Previews: PreviewProvider {
     static var previews: some View {
-        ReviewWrite(movie: exampleMovie1)
+        Preview(source: ReviewWrite(movie: exampleMovie1), dark: true)
             .environmentObject(BaseViewModel())
     }
 }

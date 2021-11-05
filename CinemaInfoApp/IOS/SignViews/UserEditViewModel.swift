@@ -1,18 +1,27 @@
 import Foundation
 import SwiftUI
 
+struct Msg {
+    var title: String
+    var msg: String
+}
+
 class UserEditViewModel: ObservableObject {
     @Published var pwd: SignField = SignField(text: "", isError: false, errorMsg: "")
     @Published var tab: EditTab = .passwordCheck
-    @Published var pwdCheckAlert = false
-    @Published var pwdCHeckErrorAlert = false
+    @Published var alert = false
+    @Published var msg: Msg = Msg(title: "", msg: "")
     
     //userEdit
     @Published var editPwd: SignField = SignField(text: "", isError: false, errorMsg: "")
+    @Published var loading: Bool = false
     
-    var loading: Bool = false
-
-    init() {
+    var id: String = ""
+    
+    var baseViewModel: BaseViewModel?
+    
+    func setting(baseViewModel: BaseViewModel) {
+        self.baseViewModel = baseViewModel
     }
     
     func checkField() -> Bool{
@@ -36,7 +45,8 @@ class UserEditViewModel: ObservableObject {
         
         return result
     }
-
+    
+    init() {}
 }
 
 extension UserEditViewModel {
@@ -52,24 +62,32 @@ extension UserEditViewModel {
             .mapError({ (error) -> Error in
                 return error
             })
-            .sink(receiveCompletion: { result in
+            .sink(receiveCompletion: { [weak self] result in
                 switch result {
                 case .finished :
                     print("PwCheck Finished")
                     
                 case .failure(let error) :
                     print("PwCheck Error : \(error)")
+                    self?.alert = true
+                    self?.msg = Msg(title: I18N.passwordCheck, msg: I18N.passwordCheckError)
                 }
+                
+                self?.loading = false
             }, receiveValue: { [weak self] value in
+                if let id = value.result?.id {
+                    self?.id = id
+                }
+                
                 if let userPwd = value.result?.pwd, let pwd = self?.pwd.text{
                     if userPwd == pwd {
-                        
-                        withAnimation(.easeIn.speed(0.6)) {
+                        withAnimation(.easeIn(duration: 0.3)) {
                             self?.tab = .passwordEdit
                         }
                     }
                     else {
-                        self?.pwdCheckAlert = true
+                        self?.alert = true
+                        self?.msg = Msg(title: I18N.passwordCheck, msg: I18N.passwordCheckFail)
                     }
                 }
             })
@@ -78,7 +96,40 @@ extension UserEditViewModel {
     func userEdit() {
         loading = true
         
-        loading = false
+        if !checkEditField() {
+            loading = false
+            return
+        }
+        MovieDB.userEdit(pwd: editPwd.text)
+            .mapError({ (error) -> Error in
+                return error
+            })
+            .sink(receiveCompletion: { [weak self] result in
+                switch result {
+                case .finished:
+                    print("UserEdit Finished")
+                    if KeyChainHelper.standard.read(service: loginService, account: loginAccount) != nil {
+                        KeyChainHelper.standard.update(item: SignUser(id: self?.id, pwd: self?.editPwd.text), service: loginService, account: loginAccount)
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self?.alert = true
+                        self?.msg = Msg(title: I18N.passwordEdit, msg: I18N.passwordEditSucces)
+                    }
+                    
+                case .failure(let error):
+                    print("UserEdit Error: \(error)")
+                    
+                    DispatchQueue.main.async {
+                        self?.alert = true
+                        self?.msg = Msg(title: I18N.passwordEdit, msg: I18N.passwordEditFail)
+                    }
+                }
+                
+                self?.loading = false
+            }, receiveValue: { result in
+                print(result)
+            })
     }
     
 }

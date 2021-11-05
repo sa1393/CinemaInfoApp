@@ -15,19 +15,13 @@ class SignUpViewModel: ObservableObject {
     @Published var pwd: SignField = SignField(text: "", isError: false, errorMsg: "")
     
     @Published var loading: Bool = false
+    @Published var offSign = false
+    @Published var showingFailAlert: Bool = false
     
     var defaultImageData = UIImage(systemName: "person.fill")?.pngData()
     
     var signUpCancellationToken: AnyCancellable?
-    
-    @Published var offSign = false
     var cancellable: AnyCancellable?
-    
-    @Published var showingFailAlert: Bool = false
-
-    func offSignView() {
-        offSign = true
-    }
     
     func checkField() -> Bool{
         var result = true
@@ -50,9 +44,7 @@ class SignUpViewModel: ObservableObject {
         return result
     }
     
-    init() {
-        
-    }
+    init() {}
 }
 
 extension SignUpViewModel {
@@ -62,10 +54,8 @@ extension SignUpViewModel {
             loading = false
             return
         }
-        
-        print("signUP Start")
-        print("------------------------------------------------------------------")
-        signUpCancellationToken = MovieDB.SignUp(id: id.text, name: name.text, pwd: pwd.text, profile: profile ?? UIImage(systemName: "person.fill")!)
+
+        signUpCancellationToken = MovieDB.signUp(id: id.text, name: name.text, pwd: pwd.text, profile: profile ?? UIImage(systemName: "person.fill")!)
             .mapError( { (error) -> Error in
                 return error
             })
@@ -74,13 +64,23 @@ extension SignUpViewModel {
                 case .finished :
                     print("SignUp Finished")
                     
-                    self?.offSignView()
+                    DispatchQueue.main.async {
+                        self?.offSign = true
+                    }
+                    
                 case .failure(let error) :
-                    self?.showingFailAlert = true
+                    
+                    DispatchQueue.main.async {
+                        self?.showingFailAlert = true
+                    }
+                    
                     print("SignUp Error: \(error)")
                 }
+                
+                DispatchQueue.main.async {
+                    self?.loading = false
+                }
 
-                self?.loading = false
             }, receiveValue: { _ in
                 
             })

@@ -33,6 +33,8 @@ struct MovieDetail: View {
         else {
             screening = false
         }
+        
+        print(movie.movie.posterImgURL)
     }
     
     var body: some View {
@@ -44,7 +46,28 @@ struct MovieDetail: View {
                 
                 ScrollView(showsIndicators: false) {
                     ZStack {
-                        detailImage
+                        VStack {
+                            if movie.movie.posterImgURL != nil {
+                                KFImage(movie.movie.posterImgURL)
+                                    .placeholder {
+                                        ProgressView()
+                                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                    }
+                                    .resizable()
+                                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth / 2 * 3)
+                                    .overlay(
+                                        ZStack {
+                                            gradient
+                                            gradient2
+                                        }
+                                    )
+                            }
+                            else {
+                                Text(I18N.noImage)
+                            }
+                            
+                            Spacer()
+                        }
                         
                         content
                     }
@@ -65,7 +88,7 @@ struct MovieDetail: View {
             movieDetailVM.movie = movie
             
             if baseViewModel.isLogin {
-                movieDetailVM.fetchMyReviews()
+                movieDetailVM.fetchMyReview(movieId: movie.movie.movieId)
             }
             withAnimation(.easeInOut.speed(1.5)) {
                 movieDetailVM.previewComment()
@@ -75,36 +98,6 @@ struct MovieDetail: View {
         
     }
 }
-
-extension MovieDetail {
-    var detailImage: some View {
-        VStack {
-            if movie.movie.posterImgURL != nil {
-                KFImage(movie.movie.posterImgURL)
-                    .placeholder {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                    }
-                    .resizable()
-                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth / 2 * 3)
-                    .overlay(
-                        ZStack {
-                            gradient
-                            gradient2
-                        }
-                       
-                    )
-                
-            }
-            else {
-                Text(I18N.noImage)
-            }
-            
-            Spacer()
-        }
-    }
-}
-
 extension MovieDetail {
     var content: some View {
         VStack {
@@ -158,7 +151,7 @@ extension MovieDetail {
                             .font(.system(size: 18, weight: .bold))
                         
                         ReviewView(review: myReview, movie: movie, myReview: true, allReviewViewModel: allReviewViewModel) {
-                            movieDetailVM.fetchMyReviews()
+                            movieDetailVM.fetchMyReview(movieId: movie.movie.movieId)
                             movieDetailVM.fetchReviews(offset: 0, size: 4)
                         }
                     } else {
@@ -171,7 +164,7 @@ extension MovieDetail {
                                     ReviewWrite(movie: movie)
                                 }, label: {
                                     Image(systemName: "pencil")
-                                    Text(I18N.reviewWirte)
+                                    Text(I18N.reviewWrite)
                                         .font(.system(size: 18, weight: .semibold))
                                 })
                             }
@@ -181,9 +174,10 @@ extension MovieDetail {
                                 Spacer()
                                 NavigationLink(destination: {
                                     SignInView()
+                                        .environmentObject(baseViewModel)
                                 }, label: {
                                     Image(systemName: "pencil")
-                                    Text(I18N.reviewWirte)
+                                    Text(I18N.reviewWrite)
                                         .font(.system(size: 18, weight: .bold))
                                 })
         
@@ -197,7 +191,6 @@ extension MovieDetail {
                 
             }
             .padding(.vertical, 15)
-
 
             MovieDetailSwitcher(movieDetailVM: movieDetailVM, movie: movie, screening: screening, myReview: movieDetailVM.myReview, allReviewViewModel: allReviewViewModel)
             
@@ -224,20 +217,7 @@ extension MovieDetail {
 
 struct MovieDetail_Previews: PreviewProvider {
     static var previews: some View {
-
-        MovieDetail(movie: exampleMovie1)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
+        Preview(source: MovieDetail(movie: exampleMovie1), dark: true)
             .environmentObject(BaseViewModel())
-    
-        
-        MovieDetail(movie: exampleMovie3)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
-            .environmentObject(BaseViewModel())
-
-        MovieDetail(movie: exampleMovie3)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
-            .environmentObject(BaseViewModel())
-
-        
     }
 }

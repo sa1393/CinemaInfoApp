@@ -1,6 +1,6 @@
 import SwiftUI
-@main
 
+@main
 struct CinemaInfoAppApp: App {
     @StateObject var baseData: BaseViewModel = BaseViewModel()
     

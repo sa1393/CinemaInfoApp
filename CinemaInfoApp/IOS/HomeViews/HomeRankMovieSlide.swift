@@ -3,11 +3,9 @@ import Kingfisher
 
 struct HomeRankMovieSlide: View {
     var movies: [MovieProtocol]
-    
     var memoString: String = ""
+    
     @State var currentMovieIndex: Int = 0
-    
-    
     
     let gradient1 = LinearGradient(
         gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.3), Color.black.opacity(1)]),

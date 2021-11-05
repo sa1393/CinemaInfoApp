@@ -2,9 +2,8 @@ import Foundation
 
 final class KeyChainHelper {
     static let standard = KeyChainHelper()
-    private init(){
-        
-    }
+    
+    private init(){}
     
     func save(data: Data, service: String, account: String) {
         let query = [
@@ -75,10 +74,8 @@ final class KeyChainHelper {
         ] as CFDictionary
         
         let attributes = [
-            kSecValueData: data,
-            kSecClass: kSecClassGenericPassword,
-            kSecAttrService: service,
             kSecAttrAccount: account,
+            kSecValueData: data
         ] as CFDictionary
         
         SecItemUpdate(query, attributes)
@@ -87,6 +84,7 @@ final class KeyChainHelper {
     func update<T>(item: T, service: String, account: String) where T : Codable{
         do {
             let data = try JSONEncoder().encode(item)
+            print("update keychain \(item) \(service) \(account)")
             update(data: data, service: service, account: account)
         }
         catch {

@@ -1,8 +1,8 @@
 import Foundation
 import Combine
 
-let loginService = "LoginData"
-let loginAccount = "User"
+let loginService = "MovieInfoApp"
+let loginAccount = "UserLoginData"
 
 class SigninViewModel: ObservableObject {
     @Published var id: SignField = SignField(text: "", isError: false, errorMsg: "")
@@ -10,10 +10,11 @@ class SigninViewModel: ObservableObject {
     
     @Published var loading: Bool = false
     @Published var showingFailAlert: Bool = false
-    @Published var autoLogin: Bool = false
-    var baseViewModel: BaseViewModel?
-    
+    @Published var autoLogin: Bool = true
     @Published var offSign = false
+    
+    var baseViewModel: BaseViewModel?
+   
     var cancellable: AnyCancellable?
 
     func offSignView() {
@@ -24,7 +25,7 @@ class SigninViewModel: ObservableObject {
         var result = true
         if id.text.isEmpty {
             id.isError = true
-            id.errorMsg = "id를 입력하세요."
+            id.errorMsg = "아이디를 입력하세요."
             result = false
         }
 
@@ -46,7 +47,7 @@ class SigninViewModel: ObservableObject {
         
     }
     
-    func setUp(_ baseViewModel: BaseViewModel) {
+    func setUp(baseViewModel: BaseViewModel) {
         self.baseViewModel = baseViewModel
     }
 }
@@ -81,7 +82,7 @@ extension SigninViewModel {
             loading = false
             return
         }
-        MovieDB.SignIn(id: id.text, pwd: pwd.text)
+        MovieDB.signin(id: id.text, pwd: pwd.text)
             .mapError({ (error) -> Error in
                 return error
             })
@@ -89,10 +90,11 @@ extension SigninViewModel {
                 switch result {
                 case .finished :
                     print("SignIn Finished")
-
+                    
                     DispatchQueue.main.async {
                         self?.offSignView()
                         self?.baseViewModel?.isLogin = true
+                        
                         if let autoLogin = self?.autoLogin {
                             if autoLogin {
                                 self?.baseViewModel?.autoLogin = true
@@ -105,12 +107,15 @@ extension SigninViewModel {
                     }
                     else {
                         KeyChainHelper.standard.save(item: SignUser(id: self?.id.text, pwd: self?.pwd.text), service: loginService, account: loginAccount)
+                        
                     }
 
                     break
                 case .failure(let error):
-                    self?.showingFailAlert = true
-
+                    
+                    DispatchQueue.main.async {
+                        self?.showingFailAlert = true
+                    }
                     print("SignIn error: \(error)")
                 }
 
@@ -119,7 +124,7 @@ extension SigninViewModel {
                 }
 
             }, receiveValue: { value in
-                print("SignIn Value: \(value)")
+                print("SignIn Value: \(value)")                
             })
     }
 

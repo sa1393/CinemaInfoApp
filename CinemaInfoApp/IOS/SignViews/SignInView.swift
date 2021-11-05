@@ -17,7 +17,6 @@ struct SignInView: View {
                         SignTextField(placeHolder: I18N.pwd, secure: true, signField: $signInViewModel.pwd)
                     }
                    
-                    
                     HStack {
                         Button(action: {
                             signInViewModel.autoLogin.toggle()
@@ -89,7 +88,6 @@ struct SignInView: View {
             
             if signInViewModel.loading {
                 VStack {
-                    
                     Spacer()
                     HStack {
                         Spacer()
@@ -108,17 +106,20 @@ struct SignInView: View {
             Alert(title: Text(I18N.signin), message: Text(I18N.signinFail), dismissButton: .default(Text(I18N.close)))
         }
         .onAppear {
-            self.signInViewModel.baseViewModel = self.baseViewModel
+            self.signInViewModel.setUp(baseViewModel: baseViewModel)
+            print(self.signInViewModel.baseViewModel)
             self.signInViewModel.cancellable = self.signInViewModel
                 .$offSign
                 .sink(receiveValue: { offSign in
-                    guard offSign else { return }
                     
+                    guard offSign else { return }
+                    print(offSign)
                     DispatchQueue.main.async {
                         self.presentationMode.wrappedValue.dismiss()
                     }
                 }
                 )
+            
         }
         
     }
